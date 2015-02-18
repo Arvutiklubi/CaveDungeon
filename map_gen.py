@@ -1,7 +1,6 @@
 import pygame
 import random
 import itertools
-import math
 
 
 class Map:
@@ -44,7 +43,7 @@ class Map:
 
     def map_iter(self, iter_rule):
         # single step of iteration to iterate through the map
-        self.print_map()
+        #self.print_map()
         new_map = [[0 for i in range(self.width)] for j in range(self.height)]
         for x, y in itertools.product(range(self.width), range(self.height)):
             new_map[y][x] = iter_rule(x, y)
@@ -131,7 +130,7 @@ class Map:
                     # and some near cave walls.
                     if self.count_blocks(x, y, grid_sz) >= probability2:
                         self.map[y][x] = id
-        self.print_map()
+        #self.print_map()
         return
 
     def enlarge_map(self):
@@ -147,38 +146,17 @@ class Map:
         self.map = [[0 for i in range(enlarging_coe * self.width)] for j in range(enlarging_coe * self.height)]
         self.width, self.height = enlarging_coe * self.width, enlarging_coe * self.height
         self.map = new_map
-        self.print_map()
-
-class Player:
-    def __init__(self, pos, size):
-        self.position = pos
-        self.velocity = [0, 0]
-        self.size = size
-        self.rect = pygame.Rect(pos[0], pos[1], self.size, self.size)
-
-    def update_kinematics(self, time):
-        self.position[0] = self.velocity[0] * time
-        self.position[1] = self.velocity[1] * time
-
-    def change_dx(self, dx):
-        self.velocity[0] = dx
-
-    def change_dy(self, dy):
-        self.velocity[1] = dy
+        #self.print_map()
 
 
-def main():
-    # Initializing pygame
-    pygame.init()
-    screen_width, screen_height = 800, 800
-    screen = pygame.display.set_mode((screen_width, screen_height))
+def generate_map(width, height):
+    global map_surface, map1
 
-    background = pygame.Surface(screen.get_size())
+    background = pygame.Surface((800, 600))
     background = background.convert()
     background.fill((0, 0, 0))
 
     # Generating the map
-    width, height = 400, 400
     map_color = (100, 100, 100)
     mineral_color = (75, 75, 75)
     mineral_color2 = (50, 50, 50)
@@ -195,44 +173,18 @@ def main():
     map1.convert_Rect(box_sz)
 
     # Defining the player
-    player1 = Player([0, 0], box_sz * 10)
-    playerColor = (255, 0, 0)
+    # player1 = Player([0, 0], box_sz * 10)
+    # playerColor = (255, 0, 0)
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    player1.change_dx(-5)
-                elif event.key == pygame.K_RIGHT:
-                    player1.change_dx(5)
-                elif event.key == pygame.K_UP:
-                    player1.change_dy(-5)
-                elif event.key == pygame.K_DOWN:
-                    player1.change_dy(5)
-
-            # TODO MAKE IT WORK NICELY
-            if event.type == pygame.KEYUP:
-                player1.change_dx(0)
-                player1.change_dy(0)
-
-        # move player
-        player1.rect.x += player1.velocity[0]
-        player1.rect.y += player1.velocity[1]
+    map_surface = pygame.Surface((width, height))
 
         # Drawing part
-        screen.blit(background, (0, 0))
-        for rect in map1.Rect_map:
-            pygame.draw.rect(screen, map_color, rect)
-        for mineral in map1.Mineral_map:
-            pygame.draw.rect(screen, mineral_color, mineral)
-        for mineral2 in map1.Mineral_map2:
-            pygame.draw.rect(screen, mineral_color2, mineral2)
-        for mineral3 in map1.Mineral_map3:
-            pygame.draw.rect(screen, mineral_color3, mineral3)
-        pygame.draw.rect(screen, playerColor, player1.rect)
-        pygame.time.wait(5)
-        pygame.display.flip()
-
-if __name__ == '__main__': main()
+    map_surface.blit(background, (0, 0))
+    for rect in map1.Rect_map:
+        pygame.draw.rect(map_surface, map_color, rect)
+    for mineral in map1.Mineral_map:
+        pygame.draw.rect(map_surface, mineral_color, mineral)
+    for mineral2 in map1.Mineral_map2:
+        pygame.draw.rect(map_surface, mineral_color2, mineral2)
+    for mineral3 in map1.Mineral_map3:
+        pygame.draw.rect(map_surface, mineral_color3, mineral3)
