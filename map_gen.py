@@ -98,7 +98,7 @@ class Map:
         count = self.count_blocks2(x, y, grid_sz)
         if count <= 6 and self.map[x][y]:
             return 1
-        elif count <= 7 and not self.map[x][y]:
+        elif count <= 8 and not self.map[x][y]:
             return 1
         else:
             return 0
@@ -167,8 +167,8 @@ def generate_map(width, height):
     # making it possible to develop more complex maps and regions with different characteristics
     for i in range(14): map1.map_iter(map1.iter_rule2)
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
-    map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
-    map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
+#    map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
+#    map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
 
     map1.convert_Rect(box_sz)
 

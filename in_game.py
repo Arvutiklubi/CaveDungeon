@@ -1,4 +1,4 @@
-import pygame, map_gen
+import pygame, map_gen, game_classes
 
 def init():
     global map_list, map_surface
