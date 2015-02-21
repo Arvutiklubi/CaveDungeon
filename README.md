@@ -1,2 +1,2 @@
 # CaveDungeon
-A game.
+A game developed by Arvutiklubi.
