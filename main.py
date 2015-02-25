@@ -8,7 +8,7 @@ if __name__ == '__main__':
     #setting up
     pygame.init()
 
-    screen = pygame.display.set_mode((200, 200))
+    screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('Cave')
     pygame.display.set_caption('CaveDungeon v0.001')
 

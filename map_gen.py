@@ -23,23 +23,24 @@ class Map:
         self.Mineral_map3 = []
 
     def print_map(self):
-        # Help function to visualise map from command line.
-        print_dictionary = {
-            0: ' ',  # Walkable area
-            1: '#',  # Stone wall
-            2: 'x',  # mineral 1
-            3: '+',  # mineral 2
-            4: '*'   # mineral 3
-        }
-        display_map = [[0 for i in range(self.width)] for j in range(self.height)]
-        for x, y in itertools.product(range(self.width), range(self.height)):
-            # Get print value from print_dictionary
-            display_map[y][x] = print_dictionary[self.map[y][x]]
-        # Hard work of printing it out
-        for item in display_map:
-            print(item[0], ' '.join(map(str, item[1:])))
-        print('\n')
-        return
+         # Help function to visualise map from command line.
+         print_dictionary = {
+             0: ' ',  # Walkable area
+             1: '#',  # Stone wall
+             2: 'x',  # mineral 1
+             3: '+',  # mineral 2
+             4: '*'   # mineral 3
+         }
+         display_map = [[0 for i in range(self.width)] for j in range(self.height)]
+         for x, y in itertools.product(range(self.width), range(self.height)):
+             # Get print value from print_dictionary
+             display_map[y][x] = print_dictionary[self.map[y][x]]
+         # Hard work of printing it out
+         for item in display_map:
+             print(item[0], ' '.join(map(str, item[1:])))
+         print('\n')
+         return
+
 
     def map_iter(self, iter_rule):
         # single step of iteration to iterate through the map
@@ -130,7 +131,7 @@ class Map:
                     # and some near cave walls.
                     if self.count_blocks(x, y, grid_sz) >= probability2:
                         self.map[y][x] = id
-        self.print_map()
+        #self.print_map()
         return
 
     def enlarge_map(self):
@@ -161,11 +162,11 @@ def generate_map(width, height):
     mineral_color = (75, 75, 75)
     mineral_color2 = (50, 50, 50)
     mineral_color3 = (25, 25, 25)
-    box_sz = 20
+    box_sz = 5
     map1 = Map(width, height)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
-    for i in range(7): map1.map_iter(map1.iter_rule2)
+    for i in range(7): map1.map_iter(map1.iter_rule)
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
     #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
