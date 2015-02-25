@@ -23,6 +23,8 @@ class Map:
         self.Mineral_map3 = []
 
     def print_map(self):
+        #currently not used
+
          # Help function to visualise map from command line.
          print_dictionary = {
              0: ' ',  # Walkable area
@@ -104,19 +106,7 @@ class Map:
         else:
             return 0
 
-    # Generates pygame.Rect objects list of the map
-    # Does not currently include minerals being different
-    def convert_Rect(self, box_sz):
-        for y in range(len(self.map)):
-            for x in range(len(self.map[y])):
-                if self.map[y][x] == 1:
-                    self.Rect_map.append(pygame.Rect(box_sz * x, box_sz * y, box_sz, box_sz))
-                if self.map[y][x] == 2:
-                    self.Mineral_map.append(pygame.Rect(box_sz * x, box_sz * y, box_sz, box_sz))
-                if self.map[y][x] == 3:
-                    self.Mineral_map2.append(pygame.Rect(box_sz * x, box_sz * y, box_sz, box_sz))
-                if self.map[y][x] == 4:
-                    self.Mineral_map3.append(pygame.Rect(box_sz * x, box_sz * y, box_sz, box_sz))
+
 
     def generate_minerals(self, probability, probability2, grid_sz, id):
         # Iterates through all the tiles and if it is stone wall, makes it mineral "id" with some probability.
@@ -135,6 +125,8 @@ class Map:
         return
 
     def enlarge_map(self):
+        #currently not used
+
         # makes the map bigger by generating new map from the old but enlarging each pixel to enlarging_coe**2 pixels
         enlarging_coe = 2  # should be <type int>
         new_map = [[0 for i in range(enlarging_coe * self.width)] for j in range(enlarging_coe * self.height)]
@@ -151,18 +143,8 @@ class Map:
 
 
 def generate_map(width, height):
-    global map_surface, map1
+    global map1
 
-    background = pygame.Surface((800, 600))
-    background = background.convert()
-    background.fill((0, 0, 0))
-
-    # Generating the map
-    map_color = (100, 100, 100)
-    mineral_color = (75, 75, 75)
-    mineral_color2 = (50, 50, 50)
-    mineral_color3 = (25, 25, 25)
-    box_sz = 5
     map1 = Map(width, height)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
@@ -171,17 +153,3 @@ def generate_map(width, height):
     #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
 
-    map1.convert_Rect(box_sz)
-
-    map_surface = pygame.Surface((width, height))
-
-        # Drawing part
-    map_surface.blit(background, (0, 0))
-    for rect in map1.Rect_map:
-        pygame.draw.rect(map_surface, map_color, rect)
-    for mineral in map1.Mineral_map:
-        pygame.draw.rect(map_surface, mineral_color, mineral)
-    for mineral2 in map1.Mineral_map2:
-        pygame.draw.rect(map_surface, mineral_color2, mineral2)
-    for mineral3 in map1.Mineral_map3:
-        pygame.draw.rect(map_surface, mineral_color3, mineral3)

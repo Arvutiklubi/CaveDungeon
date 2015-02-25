@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
         ms = clock.tick(30)
 
-        screen.fill((0, 0, 0))
+        screen.fill((80, 80, 80))
 
         #funktsioon joonistab ekraani in_game.py moodulis
         state.draw(screen, ms)
