@@ -161,7 +161,7 @@ def generate_map(width, height):
     mineral_color = (75, 75, 75)
     mineral_color2 = (50, 50, 50)
     mineral_color3 = (25, 25, 25)
-    box_sz = 2
+    box_sz = 20
     map1 = Map(width, height)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics

@@ -4,7 +4,7 @@ def init():
     global map_list, map_surface
 
     #genereerib kaardi
-    map_gen.generate_map(400, 400)
+    map_gen.generate_map(800, 800)
 
     #list mis sisaldab kaarti, y koord on esimene index x koord on teine index
     map_list = map_gen.map1.map
