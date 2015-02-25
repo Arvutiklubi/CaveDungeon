@@ -98,7 +98,7 @@ class Map:
         count = self.count_blocks2(x, y, grid_sz)
         if count <= 6 and self.map[x][y]:
             return 1
-        elif count <= 8 and not self.map[x][y]:
+        elif count <= 7 and not self.map[x][y]:
             return 1
         else:
             return 0
@@ -130,7 +130,7 @@ class Map:
                     # and some near cave walls.
                     if self.count_blocks(x, y, grid_sz) >= probability2:
                         self.map[y][x] = id
-        #self.print_map()
+        self.print_map()
         return
 
     def enlarge_map(self):
@@ -146,7 +146,7 @@ class Map:
         self.map = [[0 for i in range(enlarging_coe * self.width)] for j in range(enlarging_coe * self.height)]
         self.width, self.height = enlarging_coe * self.width, enlarging_coe * self.height
         self.map = new_map
-        #self.print_map()
+        self.print_map()
 
 
 def generate_map(width, height):
@@ -165,16 +165,12 @@ def generate_map(width, height):
     map1 = Map(width, height)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
-    for i in range(14): map1.map_iter(map1.iter_rule2)
+    for i in range(7): map1.map_iter(map1.iter_rule2)
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
-#    map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
-#    map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
+    #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
+    #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
 
     map1.convert_Rect(box_sz)
-
-    # Defining the player
-    # player1 = Player([0, 0], box_sz * 10)
-    # playerColor = (255, 0, 0)
 
     map_surface = pygame.Surface((width, height))
 
