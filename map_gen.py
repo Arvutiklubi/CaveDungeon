@@ -148,7 +148,7 @@ def generate_map(width, height):
     map1 = Map(width, height)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
-    for i in range(7): map1.map_iter(map1.iter_rule)
+    for i in range(10): map1.map_iter(map1.iter_rule)
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
     #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
