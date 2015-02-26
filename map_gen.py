@@ -140,13 +140,12 @@ class Map(object):
         self.map = new_map
         self.print_map()
 
-    def gen_circle(self, x, y, radius):
-        radius = self.width/2
-        for dx, dy in itertools.product(range(self.width), repeat=2):
+    def gen_circle(self, x, y, diameter):
+        # Generates a empty circle, needed for monster lair generation
+        radius = diameter/2
+        for dx, dy in itertools.product(range(diameter), repeat=2):
             if (dx - radius)**2 + (dy - radius)**2 < (radius)**2:
                 self.map[y + dy][x + dx] = 0
-            else:
-                self.map[y + dy][x + dx] = 1
 
 
 class Monsterlair(Map):
@@ -162,7 +161,7 @@ def generate_map(width, height):
     map1 = Map(width, height)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
-    for i in range(10): map1.map_iter(map1.iter_rule)
+    for i in range(10): map1.map_iter(map1.iter_rule2)
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
     #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
