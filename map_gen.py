@@ -2,8 +2,7 @@ import pygame
 import random
 import itertools
 
-
-class Map:
+class Map(object):
     # Generates map with height and width
     #	 0 representing walkable area, 1 stone wall,
     #	 numbers onward different types of minerals.
@@ -140,6 +139,21 @@ class Map:
         self.width, self.height = enlarging_coe * self.width, enlarging_coe * self.height
         self.map = new_map
         self.print_map()
+
+    def gen_circle(self, x, y, radius):
+        radius = self.width/2
+        for dx, dy in itertools.product(range(self.width), repeat=2):
+            if (dx - radius)**2 + (dy - radius)**2 < (radius)**2:
+                self.map[y + dy][x + dx] = 0
+            else:
+                self.map[y + dy][x + dx] = 1
+
+
+class Monsterlair(Map):
+    def __init__(self, x, y, width, height):
+        Map.__init__(width, height)
+        self.gen_circle(0, 0, self.width)
+        self.x, self.y = x, y
 
 
 def generate_map(width, height):
