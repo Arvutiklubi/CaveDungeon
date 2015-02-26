@@ -1,6 +1,6 @@
 import pygame, map_gen, game_classes
 
-map_size = 200 #jäta mõlemad numbrid alati võrdseks
+map_size = 100 #jäta mõlemad numbrid alati võrdseks
 block_size = 15
 
 def draw_map_surface():
@@ -29,7 +29,7 @@ def draw_map_surface():
         colomn = 0
 
 def init():
-    global map_list, camera_pos, camera_speed_x, camera_speed_y
+    global map_list, camera_pos,  player1
 
     #genereerib kaardi
     map_gen.generate_map(map_size, map_size)
@@ -41,38 +41,39 @@ def init():
     draw_map_surface()
 
     camera_pos = [0, 0]
-    camera_speed_x = 0
-    camera_speed_y = 0
+
+
+    player1 = game_classes.player([0, 0])
 
 def on_event(event):
-    global camera_speed_x, camera_speed_y
+    global player1
 
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_UP:
-            camera_speed_y = 6
+            player1.speed_y = 1
 
         elif event.key == pygame.K_DOWN:
-            camera_speed_y = -6
+            player1.speed_y = -1
 
         elif event.key == pygame.K_LEFT:
-            camera_speed_x = 6
+            player1.speed_x = 1
 
         elif event.key == pygame.K_RIGHT:
-            camera_speed_x = -6
+            player1.speed_x = -1
 
     elif event.type == pygame.KEYUP:
         if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-            camera_speed_y = 0
+            player1.speed_y = 0
 
         elif event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-            camera_speed_x = 0
-
-
-
+            player1.speed_x = 0
 
 def draw(screen, ms):
     global camera_pos
 
-    camera_pos = [camera_pos[0]+camera_speed_x, camera_pos[1]+camera_speed_y]
+    camera_pos = [400-block_size//2+player1.pos[0]*block_size, 300+player1.pos[1]*block_size]
     screen.blit(map_surface, camera_pos)
+
+    player1.update(screen)
+    print(player1.pos)
 
