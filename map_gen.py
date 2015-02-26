@@ -100,7 +100,8 @@ class Map(object):
         count = self.count_blocks2(x, y, grid_sz)
         if count <= 6 and self.map[x][y]:
             return 1
-        elif count <= 7 and not self.map[x][y]:
+        # change 8 back to 7 when need denser map.
+        elif count <= 8 and not self.map[x][y]:
             return 1
         else:
             return 0
