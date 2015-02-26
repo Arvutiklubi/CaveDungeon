@@ -154,6 +154,10 @@ class Monsterlair(Map):
         Map.__init__(width, height)
         self.gen_circle(0, 0, self.width)
         self.x, self.y = x, y
+        self.monsters = []
+
+    def add_monster(self, number):
+
 
 
 def generate_map(width, height):

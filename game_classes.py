@@ -1,7 +1,6 @@
 import pygame, in_game
 
 #siia tulevad classid mängu objektide jaoks
-
 class player():
     def __init__(self, pos):
         #players position is the position of the block that the characters legs are on
