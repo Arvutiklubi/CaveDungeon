@@ -156,9 +156,6 @@ class Monsterlair(Map):
         self.x, self.y = x, y
         self.monsters = []
 
-    def add_monster(self, number):
-
-
 
 def generate_map(width, height):
     global map1
