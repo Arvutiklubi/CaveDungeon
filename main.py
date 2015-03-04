@@ -28,7 +28,7 @@ if __name__ == '__main__':
                 #funktsioon mis käsitleb nupuvajutusi in_game.py moodulis
                 state.on_event(event)
 
-        ms = clock.tick(30)
+        ms = clock.tick(10)
 
         screen.fill((80, 80, 80))
 

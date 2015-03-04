@@ -1,4 +1,4 @@
-import pygame, in_game
+import pygame, in_game, map_gen
 
 #siia tulevad classid mängu objektide jaoks
 class player():
@@ -25,3 +25,15 @@ class player():
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0]+self.size[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0]/2, self.pos_onscreen[1]), 2)
 
         self.pos = [self.pos[0]+self.speed_x, self.pos[1]+self.speed_y]
+
+    def check_pos(self):
+        global map1
+        #esimene on vasakul;teine on paremal;kolmas on üleval;neljas on all
+        kontroll=[0,0,0,0]
+        c=[self.pos[0]*-1, self.pos[1]*-1]
+        
+        if map_gen.map1.map[c[1]][c[0]-1]==0:kontroll[0]=1
+        if map_gen.map1.map[c[1]][c[0]+1]==0:kontroll[1]=1
+        if map_gen.map1.map[c[1]-1][c[0]]==0:kontroll[2]=1
+        if map_gen.map1.map[c[1]+1][c[0]]==0:kontroll[3]=1
+        return kontroll
