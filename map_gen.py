@@ -101,7 +101,7 @@ class Map(object):
         if count <= 6 and self.map[x][y]:
             return 1
         # change 8 back to 7 when need denser map.
-        elif count <= 8 and not self.map[x][y]:
+        elif count <= 7 and not self.map[x][y]:
             return 1
         else:
             return 0
@@ -151,10 +151,19 @@ class Map(object):
 
 class Monsterlair(Map):
     def __init__(self, x, y, width, height):
-        Map.__init__(width, height)
+        Map.__init__(self, width, height)
+        self.map = [[1 for i in range(width)] for j in range(height)]
         self.gen_circle(0, 0, self.width)
         self.x, self.y = x, y
         self.monsters = []
+
+    def merge_with_map(self, map):
+        for dx, dy in itertools.product(range(self.width), range(self.height)):
+            if map[self.y + dy][self.x + dx] and not self.map[dy][dx]:
+                map[self.y + dy][self.x + dx] = 0
+
+        return map
+
 
 
 def generate_map(width, height):
@@ -164,6 +173,8 @@ def generate_map(width, height):
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
     for i in range(10): map1.map_iter(map1.iter_rule2)
+    monsterlair1 = Monsterlair(0, 0, 50, 50)
+    monsterlair1.merge_with_map(map1.map)
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
     #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
