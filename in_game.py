@@ -13,7 +13,7 @@ def draw_map_surface():
     #värvid millega joonistatakse kõnnitava ala ja kivimid
     colors = {
         0 : (10, 10, 10),
-        1 : (150, 150, 150),
+        1 : (70, 70, 70),
         2 : (80, 80, 80),
     }
 
