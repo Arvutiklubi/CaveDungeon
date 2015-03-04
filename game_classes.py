@@ -30,7 +30,7 @@ class player():
     def collision_detect(self):
         # True kui liigutav koordinaat on legaalne
 
-        if in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]+self.speed_x] == 0 and self.pos[0] >= 0 and self.pos[1] >= 0 and self.pos[0] < in_game.map_size and self.pos[1] < in_game.map_size:
+        if in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]+self.speed_x] == 0 and self.pos[0]+self.speed_x >= 0 and self.pos[1]+self.speed_y >= 0 and self.pos[0]+self.speed_x < in_game.map_size and self.pos[1]+self.speed_y < in_game.map_size:
             return True
         else:
             return False
