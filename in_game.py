@@ -43,24 +43,24 @@ def init():
     camera_pos = [0, 0]
 
 
-    player1 = game_classes.player([-10, -10])
+    player1 = game_classes.player([10, 10])
 
 def on_event(event):
     global player1
     global map1
 
     if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_UP and player1.check_pos()[2]==1:
-            player1.speed_y = 1
-
-        elif event.key == pygame.K_DOWN and player1.check_pos()[3]==1:
+        if event.key == pygame.K_UP:
             player1.speed_y = -1
 
-        elif event.key == pygame.K_LEFT and player1.check_pos()[0]==1:
-            player1.speed_x = 1
+        elif event.key == pygame.K_DOWN:
+            player1.speed_y = 1
 
-        elif event.key == pygame.K_RIGHT and player1.check_pos()[1]==1:
+        elif event.key == pygame.K_LEFT:
             player1.speed_x = -1
+
+        elif event.key == pygame.K_RIGHT:
+            player1.speed_x = 1
 
     elif event.type == pygame.KEYUP:
         if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -72,9 +72,9 @@ def on_event(event):
 def draw(screen, ms):
     global camera_pos
 
-    camera_pos = [400-block_size//2+player1.pos[0]*block_size, 300+player1.pos[1]*block_size]
+    camera_pos = [400+block_size//2-(player1.pos[0]+1)*block_size, 300-(player1.pos[1])*block_size]
     screen.blit(map_surface, camera_pos)
 
     player1.update(screen)
-    print(player1.pos,player1.check_pos())
+    print(player1.pos)
 
