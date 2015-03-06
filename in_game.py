@@ -5,12 +5,14 @@ block_size = 13
 
 mm_block_size, mm_surface_size = 2, 150
 
+
 def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
     screen.blit(fps_surface, (0, 0))
 
-def draw_minimap(block_size, surface_size, player_pos):
+
+def draw_minimap(block_size, surface_size):
     global minimap_surface
     row, column = 0, 0
 
@@ -19,19 +21,26 @@ def draw_minimap(block_size, surface_size, player_pos):
         0 : (25, 25, 25),
         1 : (65, 65, 65),
         2 : (75, 75, 75),
-        'red' : (255, 0, 0)
     }
 
     # Pind, kuhu joonistatkase kaart
-    minimap_surface = pygame.Surface((surface_size, surface_size))
-    # Kaardi joonistamine ridade kaupa
-    for i in range(0, len(map_list)):
+    minimap_surface = pygame.Surface((map_size*block_size+surface_size, map_size*block_size+surface_size))
+    minimap_surface.fill((0, 0, 0))
+
+    for i in range(len(map_list)):
         for j in map_list[i]:
-            minimap_surface.fill(colors[j], (block_size * (column - player_pos[0]) + surface_size//2, block_size*(row - player_pos[1]) + surface_size //2, block_size, block_size))
+            minimap_surface.fill(colors[j], (block_size*column + surface_size//2, block_size*row + surface_size//2, block_size, block_size))
             column += 1
-        row +=1
+        row += 1
         column = 0
-    minimap_surface.fill(colors['red'], (surface_size//2 - 1, surface_size//2, surface_size//50, surface_size//50))
+
+
+def minimap_update(block_size, surface_size, player_pos):
+    minimap_seqment = minimap_surface.subsurface((block_size * player_pos[0], block_size * player_pos[1], surface_size, surface_size))
+
+    minimap_seqment.fill((255, 0, 0), (surface_size//2 - 1, surface_size//2, surface_size//50, surface_size//50))
+
+    return minimap_seqment
 
 def draw_map_surface(block_size):
     global map_surface
@@ -58,6 +67,7 @@ def draw_map_surface(block_size):
         row +=1
         colomn = 0
 
+
 def init():
     global map_list, camera_pos, player1, std_font
 
@@ -72,7 +82,7 @@ def init():
 
     #pind kuhu on joonistatud kaart
     draw_map_surface(block_size)
-    draw_minimap(mm_block_size, mm_surface_size, player1.pos)
+    draw_minimap(mm_block_size, mm_surface_size)
 
     std_font = pygame.font.Font(None, 16)
 
@@ -101,6 +111,7 @@ def on_event(event):
         elif event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
             player1.speed_x = 0
 
+
 def draw(screen, ms):
     global camera_pos
 
@@ -108,8 +119,7 @@ def draw(screen, ms):
     screen.blit(map_surface, camera_pos)
 
     # uuendame minimapi iga kaader
-    draw_minimap(mm_block_size, mm_surface_size, player1.pos)
-    screen.blit(minimap_surface, (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
+    screen.blit(minimap_update(mm_block_size, mm_surface_size, player1.pos), (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
 
     player1.update(screen)
 
