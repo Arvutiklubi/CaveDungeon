@@ -1,12 +1,10 @@
 import pygame, map_gen, game_classes, main
 
-map_size = 200
+map_size = 100
 block_size = 16
 
 mm_block_size, mm_surface_size = 2, 150
 
-<<<<<<< HEAD
-=======
 def get_map_gen_direction(player_pos, threshold):
     # Returns the direction in which new map should be generated
     direction = [0, 0]
@@ -23,7 +21,6 @@ def get_map_gen_direction(player_pos, threshold):
         direction[1] = 1
 
     return direction
->>>>>>> 90de6769edea56eff750835b74fa05097994f58b
 
 def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
@@ -145,6 +142,6 @@ def draw(screen, ms):
 
     if get_map_gen_direction(player1.pos, 10) != (0, 0):
         World_map.add_map((0, 0), get_map_gen_direction(player1.pos, 10), map_size)
-    print(player1.pos, World_map.map_dict)
+    #print(player1.pos, World_map.map_dict)
 
     fps_counter(screen, ms)

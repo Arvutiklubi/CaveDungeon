@@ -52,7 +52,7 @@ class Map(object):
              display_map[y][x] = print_dictionary[self.map[y][x]]
          # Hard work of printing it out
          for item in display_map:
-             print(item[0], ' '.join(map(str, item[1:])))
+              print(item[0], ' '.join(map(str, item[1:])))
          print('\n')
          return
 
