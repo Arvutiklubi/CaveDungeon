@@ -1,9 +1,9 @@
 import pygame, map_gen, game_classes
 
 map_size = 100 #jäta mõlemad numbrid alati võrdseks
-block_size = 15
+block_size = 13
 
-def draw_map_surface():
+def draw_map_surface(block_size):
     global map_surface
 
     #abistavad muutujad
@@ -29,7 +29,7 @@ def draw_map_surface():
         colomn = 0
 
 def init():
-    global map_list, camera_pos,  player1
+    global map_list, camera_pos, player1
 
     #genereerib kaardi
     map_gen.generate_map(map_size, map_size)
@@ -38,7 +38,7 @@ def init():
     map_list = map_gen.map1.map
     #pind kuhu on joonistatud kaart
 
-    draw_map_surface()
+    draw_map_surface(block_size)
 
     camera_pos = [0, 0]
 
