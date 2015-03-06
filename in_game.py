@@ -5,6 +5,11 @@ block_size = 13
 
 mm_block_size, mm_surface_size = 2, 150
 
+def fps_counter(screen, ms):
+    fps_text = 'FPS: ' + str(1//(ms/1000))
+    fps_surface = std_font.render(fps_text, False, (255, 255, 255))
+    screen.blit(fps_surface, (0, 0))
+
 def draw_minimap(block_size, surface_size, player_pos):
     global minimap_surface
     row, column = 0, 0
@@ -54,7 +59,7 @@ def draw_map_surface(block_size):
         colomn = 0
 
 def init():
-    global map_list, camera_pos, player1
+    global map_list, camera_pos, player1, std_font
 
     #genereerib kaardi
     map_gen.generate_map(map_size, map_size)
@@ -68,6 +73,8 @@ def init():
     #pind kuhu on joonistatud kaart
     draw_map_surface(block_size)
     draw_minimap(mm_block_size, mm_surface_size, player1.pos)
+
+    std_font = pygame.font.Font(None, 16)
 
 
 def on_event(event):
@@ -105,6 +112,5 @@ def draw(screen, ms):
     screen.blit(minimap_surface, (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
 
     player1.update(screen)
-    print(player1.pos)
 
-
+    fps_counter(screen, ms)
