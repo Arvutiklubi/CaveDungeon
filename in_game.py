@@ -3,7 +3,7 @@ import pygame, map_gen, game_classes, main
 map_size = 200
 block_size = 13
 
-mp_block_size, mp_surface_size = 3, 200
+mm_block_size, mm_surface_size = 2, 150
 
 def draw_minimap(block_size, surface_size, player_pos):
     global minimap_surface
@@ -67,7 +67,7 @@ def init():
 
     #pind kuhu on joonistatud kaart
     draw_map_surface(block_size)
-    draw_minimap(mp_block_size, mp_surface_size, player1.pos)
+    draw_minimap(mm_block_size, mm_surface_size, player1.pos)
 
 
 def on_event(event):
@@ -101,8 +101,8 @@ def draw(screen, ms):
     screen.blit(map_surface, camera_pos)
 
     # uuendame minimapi iga kaader
-    draw_minimap(mp_block_size, mp_surface_size, player1.pos)
-    screen.blit(minimap_surface, (main.screen_width - mp_surface_size, main.screen_height - mp_surface_size))
+    draw_minimap(mm_block_size, mm_surface_size, player1.pos)
+    screen.blit(minimap_surface, (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
 
     player1.update(screen)
     print(player1.pos)
