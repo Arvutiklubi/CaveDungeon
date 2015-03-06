@@ -5,7 +5,6 @@ block_size = 16
 
 mm_block_size, mm_surface_size = 2, 150
 
-<<<<<<< HEAD
 def get_map_gen_direction(player_pos, threshold):
     # Returns the direction in which new map should be generated
     direction = [0, 0]
@@ -23,12 +22,10 @@ def get_map_gen_direction(player_pos, threshold):
 
     return direction
 
-=======
 def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
     screen.blit(fps_surface, (0, 0))
->>>>>>> b8cc76ebcdfd6c8b54c12549012579191a9b05eb
 
 def draw_minimap(block_size, surface_size, player_pos):
     global minimap_surface
@@ -79,11 +76,7 @@ def draw_map_surface(block_size):
         colomn = 0
 
 def init():
-<<<<<<< HEAD
-    global map_list, camera_pos, player1, World_map
-=======
-    global map_list, camera_pos, player1, std_font
->>>>>>> b8cc76ebcdfd6c8b54c12549012579191a9b05eb
+    global map_list, camera_pos, player1, World_map, std_font
 
     World_map = map_gen.Whole_map(map_size)
     #genereerib kaardi
@@ -137,13 +130,9 @@ def draw(screen, ms):
     screen.blit(minimap_surface, (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
 
     player1.update(screen)
-<<<<<<< HEAD
 
     if get_map_gen_direction(player1.pos, 10) != (0, 0):
         World_map.add_map((0, 0), get_map_gen_direction(player1.pos, 10), map_size)
     print(player1.pos, World_map.map_dict)
-
-=======
->>>>>>> b8cc76ebcdfd6c8b54c12549012579191a9b05eb
 
     fps_counter(screen, ms)
