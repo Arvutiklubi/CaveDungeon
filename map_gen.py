@@ -165,7 +165,6 @@ class Monsterlair(Map):
         return map
 
 
-
 def generate_map(width, height):
     global map1
 
