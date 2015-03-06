@@ -39,3 +39,11 @@ class player():
                 return False
         else:
             return False
+
+    def mine_block(self, mouse_click_pos):
+        if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 1 or in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 2:
+            #kustutab kivi map_list'ist, uuendab kaarti ja minimapi
+            in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] = 0
+
+            in_game.draw_map_surface(in_game.block_size)
+            in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
