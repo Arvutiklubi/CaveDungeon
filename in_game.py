@@ -1,7 +1,32 @@
-import pygame, map_gen, game_classes
+import pygame, map_gen, game_classes, main
 
-map_size = 100 #jäta mõlemad numbrid alati võrdseks
+map_size = 200
 block_size = 13
+
+mp_block_size, mp_surface_size = 3, 200
+
+def draw_minimap(block_size, surface_size, player_pos):
+    global minimap_surface
+    row, column = 0, 0
+
+    #värvid millega joonistatakse kõnnitava ala ja kivimid
+    colors = {
+        0 : (25, 25, 25),
+        1 : (65, 65, 65),
+        2 : (75, 75, 75),
+        'red' : (255, 0, 0)
+    }
+
+    # Pind, kuhu joonistatkase kaart
+    minimap_surface = pygame.Surface((surface_size, surface_size))
+    # Kaardi joonistamine ridade kaupa
+    for i in range(0, len(map_list)):
+        for j in map_list[i]:
+            minimap_surface.fill(colors[j], (block_size * (column - player_pos[0]) + surface_size//2, block_size*(row - player_pos[1]) + surface_size //2, block_size, block_size))
+            column += 1
+        row +=1
+        column = 0
+    minimap_surface.fill(colors['red'], (surface_size//2 - 1, surface_size//2, surface_size//50, surface_size//50))
 
 def draw_map_surface(block_size):
     global map_surface
@@ -36,14 +61,14 @@ def init():
 
     #list mis sisaldab kaarti, y koord on esimene index x koord on teine index
     map_list = map_gen.map1.map
-    #pind kuhu on joonistatud kaart
-
-    draw_map_surface(block_size)
 
     camera_pos = [0, 0]
-
-
     player1 = game_classes.player([10, 10])
+
+    #pind kuhu on joonistatud kaart
+    draw_map_surface(block_size)
+    draw_minimap(mp_block_size, mp_surface_size, player1.pos)
+
 
 def on_event(event):
     global player1
@@ -72,9 +97,14 @@ def on_event(event):
 def draw(screen, ms):
     global camera_pos
 
-    camera_pos = [400+block_size//2-(player1.pos[0]+1)*block_size, 300-(player1.pos[1])*block_size]
+    camera_pos = [main.screen_width//2 + block_size//2 - (player1.pos[0]+1) * block_size, main.screen_height//2 - (player1.pos[1]) * block_size]
     screen.blit(map_surface, camera_pos)
+
+    # uuendame minimapi iga kaader
+    draw_minimap(mp_block_size, mp_surface_size, player1.pos)
+    screen.blit(minimap_surface, (main.screen_width - mp_surface_size, main.screen_height - mp_surface_size))
 
     player1.update(screen)
     print(player1.pos)
+
 

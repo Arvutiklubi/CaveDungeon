@@ -1,5 +1,8 @@
 import pygame, sys, in_game
 
+# Ehk oleks ilus teha tekstifail selliste globaalsete muutujate jaoks?
+screen_width, screen_height = 800, 600
+
 def quit_funct():
     pygame.quit()
     sys.exit()
@@ -8,7 +11,7 @@ if __name__ == '__main__':
     #setting up
     pygame.init()
 
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption('Cave')
     pygame.display.set_caption('CaveDungeon v0.001')
 
