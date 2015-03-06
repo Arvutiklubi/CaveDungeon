@@ -1,6 +1,20 @@
 import pygame
 import random
 import itertools
+import operator
+
+class Whole_map(object):
+    # Object that contains all of the maps across the map and binds them together.
+    def __init__(self, map_size):
+        self.map_dict = {(0, 0): generate_map(map_size, map_size)}
+
+    def add_map(self, current_map_idx, direction, map_size):
+        # if the map does not already exist.
+        if current_map_idx not in self.map_dict:
+            new_map_idx = tuple(map(operator.add, current_map_idx, direction))
+            self.map_dict.update({new_map_idx: generate_map(map_size, map_size)})
+
+
 
 class Map(object):
     # Generates map with height and width
@@ -178,3 +192,4 @@ def generate_map(width, height):
     #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
 
+    return map1

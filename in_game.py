@@ -1,10 +1,29 @@
 import pygame, map_gen, game_classes, main
 
 map_size = 200
-block_size = 13
+block_size = 16
 
 mm_block_size, mm_surface_size = 2, 150
 
+<<<<<<< HEAD
+=======
+def get_map_gen_direction(player_pos, threshold):
+    # Returns the direction in which new map should be generated
+    direction = [0, 0]
+
+    # Checks x axis
+    if player_pos[0] < threshold:
+        direction[0] = -1
+    elif player_pos[0] > abs(map_size - threshold):
+        direction[0] = 1
+
+    if player_pos[1] < threshold:
+        direction[1] = -1
+    elif player_pos[1] > abs(map_size - threshold):
+        direction[1] = 1
+
+    return direction
+>>>>>>> 90de6769edea56eff750835b74fa05097994f58b
 
 def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
@@ -16,7 +35,7 @@ def draw_minimap(block_size, surface_size):
     global minimap_surface
     row, column = 0, 0
 
-    #värvid millega joonistatakse kõnnitava ala ja kivimid
+    # v2rvid millega joonistatakse kõnnitava ala ja kivimid
     colors = {
         0 : (25, 25, 25),
         1 : (65, 65, 65),
@@ -69,8 +88,9 @@ def draw_map_surface(block_size):
 
 
 def init():
-    global map_list, camera_pos, player1, std_font
+    global map_list, camera_pos, player1, World_map, std_font
 
+    World_map = map_gen.Whole_map(map_size)
     #genereerib kaardi
     map_gen.generate_map(map_size, map_size)
 
@@ -113,7 +133,7 @@ def on_event(event):
 
 
 def draw(screen, ms):
-    global camera_pos
+    global camera_pos, World_map
 
     camera_pos = [main.screen_width//2 + block_size//2 - (player1.pos[0]+1) * block_size, main.screen_height//2 - (player1.pos[1]) * block_size]
     screen.blit(map_surface, camera_pos)
@@ -122,5 +142,9 @@ def draw(screen, ms):
     screen.blit(minimap_update(mm_block_size, mm_surface_size, player1.pos), (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
 
     player1.update(screen)
+
+    if get_map_gen_direction(player1.pos, 10) != (0, 0):
+        World_map.add_map((0, 0), get_map_gen_direction(player1.pos, 10), map_size)
+    print(player1.pos, World_map.map_dict)
 
     fps_counter(screen, ms)
