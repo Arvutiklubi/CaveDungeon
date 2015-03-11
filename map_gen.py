@@ -23,14 +23,14 @@ def get_map_gen_direction(player_pos, threshold, map_size):
 class Whole_map(object):
     # Object that contains all of the maps across the map and binds them together.
     def __init__(self, map_size):
-        self.map_dict = {(0, 0): generate_map(map_size, map_size)}
+        self.map_dict = {(0, 0): generate_map(map_size)}
 
     def add_map(self, current_map_idx, direction, map_size):
         # if the map does not already exist.
         new_map_idx = tuple(map(operator.add, current_map_idx, direction))
         if new_map_idx not in self.map_dict:
 
-            self.map_dict.update({new_map_idx: generate_map(map_size, map_size)})
+            self.map_dict.update({new_map_idx: generate_map(map_size)})
 
 
 
@@ -49,6 +49,7 @@ class Map(object):
     #   generate maps with different characteristics
     def __init__(self, width, height):
         self.height, self.width = height, width
+        self.monster_lairs = []
         self.map = [[random.randint(0, 1) for i in range(self.width)] for j in range(self.height)]
         self.Rect_map = []
         self.Mineral_map = []
@@ -182,6 +183,12 @@ class Map(object):
             if (dx - radius)**2 + (dy - radius)**2 < (radius)**2:
                 self.map[y + dy][x + dx] = 0
 
+    def add_monster_lair(self, x, y, size):
+        self.monster_lairs.append(Monsterlair(x, y, size, size))
+        for lair in self.monster_lairs:
+            Monsterlair.merge_with_map(lair, self.map)
+
+
 
 class Monsterlair(Map):
     def __init__(self, x, y, width, height):
@@ -199,15 +206,18 @@ class Monsterlair(Map):
         return map
 
 
-def generate_map(width, height):
+def generate_map(map_size):
     global map1
 
-    map1 = Map(width, height)
+    map1 = Map(map_size, map_size)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
     for i in range(10): map1.map_iter(map1.iter_rule2)
-    monsterlair1 = Monsterlair(0, 0, 50, 50)
-    monsterlair1.merge_with_map(map1.map)
+
+    # Generating monster lairs
+    map1.add_monster_lair(0, 0, 50)
+
+    # Generating different types of minerals.
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
     #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)

@@ -86,12 +86,13 @@ def init():
     # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
 
 
-    World_map = map_gen.Whole_map(map_size)
+
     # genereerib kaardi
-    map_gen.generate_map(map_size, map_size)
+    World_map = map_gen.Whole_map(map_size)
 
     # list mis sisaldab kaarti, y koord on esimene index x koord on teine index
-    map_list = map_gen.map1.map
+    # esialgne map_list on world_mapi (0, 0) element. See juhtub olema Map objekt. Map objektist tahame map listi.
+    map_list = World_map.map_dict[(0, 0)].map
 
     camera_pos = [0, 0]
     player1 = game_classes.player([10, 10])
