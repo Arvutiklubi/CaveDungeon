@@ -3,6 +3,23 @@ import random
 import itertools
 import operator
 
+def get_map_gen_direction(player_pos, threshold, map_size):
+    # Returns the direction in which new map should be generated
+    direction = [0, 0]
+
+    # Checks x axis
+    if player_pos[0] < threshold:
+        direction[0] = -1
+    elif player_pos[0] > abs(map_size - threshold):
+        direction[0] = 1
+
+    if player_pos[1] < threshold:
+        direction[1] = -1
+    elif player_pos[1] > abs(map_size - threshold):
+        direction[1] = 1
+
+    return direction
+
 class Whole_map(object):
     # Object that contains all of the maps across the map and binds them together.
     def __init__(self, map_size):
@@ -10,9 +27,12 @@ class Whole_map(object):
 
     def add_map(self, current_map_idx, direction, map_size):
         # if the map does not already exist.
-        if current_map_idx not in self.map_dict:
-            new_map_idx = tuple(map(operator.add, current_map_idx, direction))
+        new_map_idx = tuple(map(operator.add, current_map_idx, direction))
+        if new_map_idx not in self.map_dict:
+
             self.map_dict.update({new_map_idx: generate_map(map_size, map_size)})
+
+
 
 
 
