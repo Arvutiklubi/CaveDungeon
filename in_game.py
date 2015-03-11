@@ -82,12 +82,9 @@ def draw_map_surface(block_size):
 
 
 def init():
-<<<<<<< HEAD
     global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup
-=======
     # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
-    global map_list, camera_pos, player1, World_map, std_font
->>>>>>> f5f4dd2630c3b25d6436d7a5da863e1f71de5a10
+
 
     World_map = map_gen.Whole_map(map_size)
     # genereerib kaardi

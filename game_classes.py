@@ -60,7 +60,7 @@ class player():
                 thatWillDo = True
         return pos
 
-<<<<<<< HEAD
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -113,5 +113,3 @@ class Enemy(pygame.sprite.Sprite):
             if in_game.map_list[pos[1]][pos[0]] == 0:
                 thatWillDo = True
         return pos
-=======
->>>>>>> f5f4dd2630c3b25d6436d7a5da863e1f71de5a10
