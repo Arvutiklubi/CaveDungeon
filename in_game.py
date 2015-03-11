@@ -61,21 +61,21 @@ def minimap_update(block_size, surface_size, player_pos):
 def draw_map_surface(block_size):
     global map_surface
 
-    #abistavad muutujad
+    # abistavad muutujad
     row = 0
     colomn = 0
 
-    #värvid millega joonistatakse kõnnitava ala ja kivimid
+    # värvid millega joonistatakse kõnnitava ala ja kivimid
     colors = {
         0 : (10, 10, 10),
         1 : (70, 70, 70),
         2 : (80, 80, 80),
     }
 
-    #pind kuhu joonistatakse kaart
+    # pind kuhu joonistatakse kaart
     map_surface = pygame.Surface((map_size*block_size, map_size*block_size))
 
-    #kaardi joonistamine ridade kaupa
+    # kaardi joonistamine ridade kaupa
     for i in range(0, len(map_list)):
         for j in map_list[i]:
             map_surface.fill(colors[j], (block_size*colomn, block_size*row, block_size, block_size))
@@ -85,22 +85,24 @@ def draw_map_surface(block_size):
 
 
 def init():
+    # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
     global map_list, camera_pos, player1, World_map, std_font
 
     World_map = map_gen.Whole_map(map_size)
-    #genereerib kaardi
+    # genereerib kaardi
     map_gen.generate_map(map_size, map_size)
 
-    #list mis sisaldab kaarti, y koord on esimene index x koord on teine index
+    # list mis sisaldab kaarti, y koord on esimene index x koord on teine index
     map_list = map_gen.map1.map
 
     camera_pos = [0, 0]
     player1 = game_classes.player([10, 10])
 
-    #pind kuhu on joonistatud kaart
+    # pind kuhu on joonistatud kaart
     draw_map_surface(block_size)
     draw_minimap(mm_block_size, mm_surface_size)
 
+    # pygame'i standartne font
     std_font = pygame.font.Font(None, 16)
 
 
@@ -137,6 +139,11 @@ def on_event(event):
 def draw(screen, ms):
     global camera_pos, World_map
 
+    # kaamera asukoht on vaateakna üleval vasak nurk
+    # kaamera asukoha arvutamine mängja asukoha järgi
+    # x-suund : pool ekraanist + pool ruudu suurusest - mängja asukoht + 1 * ruudu suurus
+    # y-suund : pool ekraanist - mängja asukoht * ruudu suurus
+    # imelikud liitmised ja lahutamised on imeliku, sest.
     camera_pos = [main.screen_width//2 + block_size//2 - (player1.pos[0]+1) * block_size, main.screen_height//2 - (player1.pos[1]) * block_size]
     screen.blit(map_surface, camera_pos)
 
@@ -147,6 +154,6 @@ def draw(screen, ms):
 
     if get_map_gen_direction(player1.pos, 10) != (0, 0):
         World_map.add_map((0, 0), get_map_gen_direction(player1.pos, 10), map_size)
-    #print(player1.pos, World_map.map_dict)
+    # print(player1.pos, World_map.map_dict)
 
     fps_counter(screen, ms)
