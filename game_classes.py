@@ -48,11 +48,12 @@ class player():
                     for dy, dx in itertools.product(range(-1, 2), repeat=2):
                         # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
                         in_game.map_list[mouse_click_pos[1] + dy][mouse_click_pos[0] + dx] = 0
-
-                        in_game.draw_map_surface(in_game.block_size)
-                        in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
-                        in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
                 except: pass
+
+                in_game.draw_map_surface(in_game.block_size)
+                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
 
     def create_player(self):
         thatWillDo = False
