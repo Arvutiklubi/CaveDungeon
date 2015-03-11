@@ -85,7 +85,7 @@ def draw_map_surface(block_size):
 
 
 def init():
-    global map_list, camera_pos, player1, World_map, std_font
+    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup
 
     World_map = map_gen.Whole_map(map_size)
     #genereerib kaardi
@@ -96,6 +96,9 @@ def init():
 
     camera_pos = [0, 0]
     player1 = game_classes.player([10, 10])
+    enemy = game_classes.Enemy()
+    enemyGroup = pygame.sprite.Group()
+    enemyGroup.add(enemy)
 
     #pind kuhu on joonistatud kaart
     draw_map_surface(block_size)
@@ -144,6 +147,8 @@ def draw(screen, ms):
     screen.blit(minimap_update(mm_block_size, mm_surface_size, player1.pos), (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
 
     player1.update(screen)
+    enemyGroup.update(screen)
+    enemyGroup.draw(screen)
 
     if get_map_gen_direction(player1.pos, 10) != (0, 0):
         World_map.add_map((0, 0), get_map_gen_direction(player1.pos, 10), map_size)
