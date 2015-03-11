@@ -1,16 +1,17 @@
-import pygame, in_game, map_gen, main
+import pygame, in_game, map_gen, main, random, math
 
 #siia tulevad classid mängu objektide jaoks
 class player():
     def __init__(self, pos):
         #players position is the position of the block that the characters legs are on
 
-        self.pos = pos
+        self.pos = self.create_player()
         self.size = [in_game.block_size, 2*in_game.block_size] #the character is 1x2 blocks
         self.pos_onscreen = [main.screen_width//2 - self.size[0]/2, main.screen_height//2 - self.size[1]/2]
 
         self.health = 100
         self.max_health = 100
+        self.block_mine_range = 5
 
         #how many blocks the character moves at a time
         self.speed_x = 0
@@ -41,10 +42,28 @@ class player():
             return False
 
     def mine_block(self, mouse_click_pos):
+<<<<<<< HEAD
         if mouse_click_pos[0] >= 0 and mouse_click_pos[1] >= 0 and mouse_click_pos[0] < in_game.map_size and mouse_click_pos[1] < in_game.map_size:
             if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 1 or in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 2:
+=======
+        if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 1 or in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 2:
+            if math.fabs(mouse_click_pos[0] - self.pos[0]) <= self.block_mine_range and math.fabs(mouse_click_pos[1] - self.pos[1]) <= self.block_mine_range:
+>>>>>>> f8e06a86bdb81d678de7abf55645b75cdee2ca89
                 #kustutab kivi map_list'ist, uuendab kaarti ja minimapi
                 in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] = 0
 
                 in_game.draw_map_surface(in_game.block_size)
+<<<<<<< HEAD
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+=======
+                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
+    def create_player(self):
+        thatWillDo = False
+        while not thatWillDo:
+            pos = [random.randint(30, in_game.map_size-30), random.randint(30, in_game.map_size-30)]
+            if in_game.map_list[pos[1]][pos[0]] == 0:
+                thatWillDo = True
+        return pos
+        
+>>>>>>> f8e06a86bdb81d678de7abf55645b75cdee2ca89
