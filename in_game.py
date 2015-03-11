@@ -53,9 +53,6 @@ def draw_minimap(block_size, surface_size):
 
 def minimap_update(block_size, surface_size, player_pos):
     minimap_seqment = minimap_surface.subsurface((block_size * player_pos[0], block_size * player_pos[1], surface_size, surface_size))
-
-    minimap_seqment.fill((255, 0, 0), (surface_size//2 - 1, surface_size//2, surface_size//50, surface_size//50))
-
     return minimap_seqment
 
 def draw_map_surface(block_size):
@@ -150,10 +147,16 @@ def draw(screen, ms):
     # uuendame minimapi iga kaader
     screen.blit(minimap_update(mm_block_size, mm_surface_size, player1.pos), (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
 
+    # joonistab minimap'i indikaatori
+    screen.fill((255, 0, 0), (main.screen_width - mm_surface_size//2 - 1, main.screen_height - mm_surface_size//2, mm_surface_size//50, mm_surface_size//50))
+
+
+
     player1.update(screen)
 
     if get_map_gen_direction(player1.pos, 10) != (0, 0):
         World_map.add_map((0, 0), get_map_gen_direction(player1.pos, 10), map_size)
     # print(player1.pos, World_map.map_dict)
+
 
     fps_counter(screen, ms)
