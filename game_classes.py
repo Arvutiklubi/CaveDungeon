@@ -1,11 +1,11 @@
-import pygame, in_game, map_gen, main
+import pygame, in_game, map_gen, main, random
 
 #siia tulevad classid mängu objektide jaoks
 class player():
     def __init__(self, pos):
         #players position is the position of the block that the characters legs are on
 
-        self.pos = pos
+        self.pos = self.create_player()
         self.size = [in_game.block_size, 2*in_game.block_size] #the character is 1x2 blocks
         self.pos_onscreen = [main.screen_width//2 - self.size[0]/2, main.screen_height//2 - self.size[1]/2]
 
@@ -47,3 +47,12 @@ class player():
 
             in_game.draw_map_surface(in_game.block_size)
             in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
+    def create_player(self):
+        thatWillDo = False
+        while not thatWillDo:
+            pos = [random.randint(30, in_game.map_size-30), random.randint(30, in_game.map_size-30)]
+            if in_game.map_list[pos[1]][pos[0]] == 0:
+                thatWillDo = True
+        return pos
+        
