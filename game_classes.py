@@ -11,7 +11,7 @@ class player():
 
         self.health = 100
         self.max_health = 100
-        self.block_mine_range = 5
+        self.block_mine_range = 5.5
 
         #how many blocks the character moves at a time
         self.speed_x = 0
@@ -43,7 +43,7 @@ class player():
 
     def mine_block(self, mouse_click_pos):
         if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 1 or in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 2:
-            if math.fabs(mouse_click_pos[0] - self.pos[0]) <= self.block_mine_range and math.fabs(mouse_click_pos[1] - self.pos[1]) <= self.block_mine_range:
+            if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
                 #kustutab kivi map_list'ist, uuendab kaarti ja minimapi
                 in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] = 0
 
