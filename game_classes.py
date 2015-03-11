@@ -64,8 +64,8 @@ class Enemy(pygame.sprite.Sprite):
         self.image.fill((0,255,255))
         self.rect = self.image.get_rect()
         self.pos = self.create_enemy()
-        self.rect.x = self.pos[0]
-        self.rect.y = self.pos[1]
+        self.rect.x = self.pos[0] #* in_game.block_size - in_game.camera_pos[0]
+        self.rect.y = self.pos[1] #* in_game.block_size - in_game.camera_pos[1]
 
         self.health = 100
         self.max_health = 100
@@ -75,6 +75,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed_y = 0
 
     def update(self, screen):
+        print(self.rect.x,self.rect.y,self.pos)
         if self.collision_detect():
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]+self.speed_y]
 
