@@ -42,18 +42,11 @@ class player():
             return False
 
     def mine_block(self, mouse_click_pos):
-<<<<<<< HEAD
-        if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 1 or in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 2:
-            if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
-                #kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] = 0
-=======
         if mouse_click_pos[0] >= 0 and mouse_click_pos[1] >= 0 and mouse_click_pos[0] < in_game.map_size and mouse_click_pos[1] < in_game.map_size:
             if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 1 or in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] == 2:
-                if math.fabs(mouse_click_pos[0] - self.pos[0]) <= self.block_mine_range and math.fabs(mouse_click_pos[1] - self.pos[1]) <= self.block_mine_range:
-                    #kustutab kivi map_list'ist, uuendab kaarti ja minimapi
+                if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
+                    # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
                     in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] = 0
->>>>>>> 801fb89400de6b641d61b5210d03489a9e8b6839
 
                     in_game.draw_map_surface(in_game.block_size)
                     in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
