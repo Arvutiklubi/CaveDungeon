@@ -51,11 +51,10 @@ class player():
 
     def mine_block(self, mouse_click_pos):
                 try:
-                    if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] != 0:
-                        if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
-                            for dy, dx in itertools.product(range(-1, 2), repeat=2):
-                                # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                                in_game.map_list[mouse_click_pos[1] + dy][mouse_click_pos[0] + dx] = 0
+                    if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
+                        for dy, dx in itertools.product(range(-1, 2), repeat=2):
+                            # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
+                            in_game.map_list[mouse_click_pos[1] + dy][mouse_click_pos[0] + dx] = 0
                 except: pass
 
                 in_game.draw_map_surface(in_game.block_size)
