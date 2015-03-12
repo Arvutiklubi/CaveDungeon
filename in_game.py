@@ -5,23 +5,6 @@ block_size = 16
 
 mm_block_size, mm_surface_size = 2, 150
 
-def get_map_gen_direction(player_pos, threshold):
-    # Returns the direction in which new map should be generated
-    direction = [0, 0]
-
-    # Checks x axis
-    if player_pos[0] < threshold:
-        direction[0] = -1
-    elif player_pos[0] > abs(map_size - threshold):
-        direction[0] = 1
-
-    if player_pos[1] < threshold:
-        direction[1] = -1
-    elif player_pos[1] > abs(map_size - threshold):
-        direction[1] = 1
-
-    return direction
-
 def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
@@ -161,9 +144,9 @@ def draw(screen, ms):
     enemyGroup.update(screen)
     enemyGroup.draw(screen)
 
-    if get_map_gen_direction(player1.pos, 10) != (0, 0):
-        World_map.add_map((0, 0), get_map_gen_direction(player1.pos, 10), map_size)
-    # print(player1.pos, World_map.map_dict)
+    if map_gen.get_map_gen_direction(player1.pos, 10, 100) != (0, 0):
+        World_map.add_map((0, 0), map_gen.get_map_gen_direction(player1.pos, 10, 100), map_size)
+    print(World_map.map_dict)
 
 
     fps_counter(screen, ms)
