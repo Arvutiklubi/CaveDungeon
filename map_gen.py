@@ -207,8 +207,27 @@ class Monsterlair(Map):
         self.x, self.y = x, y
         self.monsters = []
 
+    def generate_minerals(self, probability, probability2, grid_sz, id):
+        # Iterates through all the tiles and if it is stone wall, makes it mineral "id" with some probability.
+        # Probability2 denotes the amount of cells not empty around. a
+        for y in range(self.height):
+            for x in range(self.width):
+                # gives the probability that mineral spawns at possible spawn locations
+                if self.map[y][x] and probability >= random.random():
+                    # defines the possible spawn locations regarding what is around the spawn location.
+                    # if the tile has so and so many stone tiles around it.
+                    # making possible to make some minerals spawn deep within walls
+                    # and some near cave walls.
+                    if self.count_blocks(x, y, grid_sz) >= probability2:
+                        self.map[y][x] = id
+        #self.print_map()
+        return
+
     def merge_with_map(self, map):
+        map1.generate_minerals(probability=1, id=3, probability2=3**2-1, grid_sz=3)
         for dx, dy in itertools.product(range(self.width), range(self.height)):
+            if map[self.y + dy][self.x + dx] and self.map[dy][dx] == 3:
+                map[self.y + dy + 1][self.x + dx + 1] = 3
             if map[self.y + dy][self.x + dx] and not self.map[dy][dx]:
                 map[self.y + dy][self.x + dx] = 0
 
@@ -225,12 +244,13 @@ def generate_map(map_size):
 
     # Generating monster lairs
     # Generate at most 5 lairs
-    for i in range(random.randint(0, 5)):
+    """for i in range(random.randint(0, 5)):
         try:
             lair_size = random.randint(0, int(random.normalvariate(in_game.map_size/2, 5)))
             map1.add_monster_lair(random.randint(0, in_game.map_size), random.randint(0, in_game.map_size), lair_size)
-        except: pass
-
+      except: pass
+"""
+    map1.add_monster_lair(0, 0, 50)
 
     # Generating different types of minerals.
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)

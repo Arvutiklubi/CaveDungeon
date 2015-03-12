@@ -20,6 +20,7 @@ def draw_minimap(block_size, surface_size):
         0 : (25, 25, 25),
         1 : (65, 65, 65),
         2 : (75, 75, 75),
+        3 : (30,  0,  0),
     }
 
     # Pind, kuhu joonistatkase kaart
@@ -50,6 +51,7 @@ def draw_map_surface(block_size):
         0 : (10, 10, 10),
         1 : (70, 70, 70),
         2 : (80, 80, 80),
+        3 : (30,  0,  0),
     }
 
     # pind kuhu joonistatakse kaart
