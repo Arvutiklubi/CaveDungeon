@@ -2,6 +2,7 @@ import pygame
 import random
 import itertools
 import operator
+import in_game
 
 def get_map_gen_direction(player_pos, threshold, map_size):
     # Returns the direction in which new map should be generated
@@ -117,6 +118,7 @@ class Map(object):
             # optimisation
             if limit is not None and count > limit:
                 return count
+
             # Don't count the square we are on.
             if not (dx == dy == 0):
                 # ignore going outside of the map
@@ -222,7 +224,13 @@ def generate_map(map_size):
     for i in range(7): map1.map_iter(map1.iter_rule2)
 
     # Generating monster lairs
-    map1.add_monster_lair(0, 0, 50)
+    # Generate at most 5 lairs
+    for i in range(random.randint(0, 5)):
+        try:
+            lair_size = random.randint(0, int(random.normalvariate(in_game.map_size/2, 5)))
+            map1.add_monster_lair(random.randint(0, in_game.map_size), random.randint(0, in_game.map_size), lair_size)
+        except: pass
+
 
     # Generating different types of minerals.
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)

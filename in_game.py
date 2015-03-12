@@ -145,10 +145,11 @@ def draw(screen, ms):
     enemyGroup.draw(screen)
 
 
-    # Kui lähed 10 sammu kaugusele mapi äärest genereeri sinna äärde uus map.
+    # Kui lähed 10 sammu kaugusele mapi äärest genereeri sinna äärde uus map
     if map_gen.get_map_gen_direction(player1.pos, 10, map_size) != (0, 0):
         World_map.add_map((0, 0), map_gen.get_map_gen_direction(player1.pos, 10, map_size), map_size)
     print(World_map.map_dict)
+    print(len(World_map.map_dict[(0, 0)].monster_lairs))
 
 
     fps_counter(screen, ms)

@@ -27,27 +27,35 @@ class player():
 
         if self.collision_detect():
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]+self.speed_y]
+        elif self.dir == "y":
+            self.pos = [self.pos[0], self.pos[1]+self.speed_y]
+        elif self.dir == "x":
+            self.pos = [self.pos[0]+self.speed_x, self.pos[1]]
 
     def collision_detect(self):
         # True kui liigutav koordinaat on legaalne
         # Hendrik, mida kuradit?! Paneme paar and'i veel? :D
         # Tegin natuke paremaks, aga ainult selle pärast, et see tööle hakkaks. See rida oli väga ilus !
-
+        self.dir = ""
         if self.pos[0]+self.speed_x >= 0 and self.pos[1]+self.speed_y >= 0 and self.pos[0]+self.speed_x < in_game.map_size and self.pos[1]+self.speed_y < in_game.map_size:
             if in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]+self.speed_x] == 0:
                 return True
+            elif in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] != 0 and in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] == 0:
+                self.dir = "y"
+            elif in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] != 0 and in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] == 0:
+                self.dir = "x"
             else:
                 return False
         else:
             return False
 
     def mine_block(self, mouse_click_pos):
-        if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] != 0:
-            if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
                 try:
-                    for dy, dx in itertools.product(range(-1, 2), repeat=2):
-                        # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                        in_game.map_list[mouse_click_pos[1] + dy][mouse_click_pos[0] + dx] = 0
+                    if in_game.map_list[mouse_click_pos[1]][mouse_click_pos[0]] != 0:
+                        if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
+                            for dy, dx in itertools.product(range(-1, 2), repeat=2):
+                                # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
+                                in_game.map_list[mouse_click_pos[1] + dy][mouse_click_pos[0] + dx] = 0
                 except: pass
 
                 in_game.draw_map_surface(in_game.block_size)
