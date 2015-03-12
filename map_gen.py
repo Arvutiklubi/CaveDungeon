@@ -88,12 +88,16 @@ class Map(object):
         return
 
     # Returns the number of adjacent blocks that are not empty
-    def count_blocks(self, x, y, grid_sz):
+    def count_blocks(self, x, y, grid_sz, limit=None):
         # magic constant making it more intuitive to use.
         a = int((grid_sz - 1) / 2)
         count = 0
         # iterates through all the blocks in grid_sz x grid_sz box.
+
         for dx, dy in itertools.product(range(-a, a + 1), repeat=2):
+            # optimisation
+            if limit is not None and count > limit:
+                return count
             # Don't count the square we are on.
             if not (dx == dy == 0):
                 # ignore going outside of the map
@@ -104,12 +108,15 @@ class Map(object):
         return count
 
     # Magical function that generates aesthetic (smooth) maps. Nobody knows why. Shouldn't work.
-    def count_blocks2(self, x, y, grid_sz=3):
+    def count_blocks2(self, x, y, grid_sz=3, limit=None):
         # coverting grid_sz
         a = int((grid_sz - 1) / 2)
         count = 0
         # iterates through all the blocks in grid_sz x grid_sz box.
         for dx, dy in itertools.product(range(-1, a + 1), repeat=2):
+            # optimisation
+            if limit is not None and count > limit:
+                return count
             # Don't count the square we are on.
             if not (dx == dy == 0):
                 # ignore going outside of the map
@@ -132,7 +139,7 @@ class Map(object):
 
     def iter_rule2(self, x, y):
         grid_sz = 5
-        count = self.count_blocks2(x, y, grid_sz)
+        count = self.count_blocks2(x, y, grid_sz, limit=8)
         if count <= 6 and self.map[x][y]:
             return 1
         # change 8 back to 7 when need denser map.
@@ -212,7 +219,7 @@ def generate_map(map_size):
     map1 = Map(map_size, map_size)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
-    for i in range(10): map1.map_iter(map1.iter_rule2)
+    for i in range(7): map1.map_iter(map1.iter_rule2)
 
     # Generating monster lairs
     map1.add_monster_lair(0, 0, 50)

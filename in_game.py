@@ -144,8 +144,10 @@ def draw(screen, ms):
     enemyGroup.update(screen)
     enemyGroup.draw(screen)
 
-    if map_gen.get_map_gen_direction(player1.pos, 10, 100) != (0, 0):
-        World_map.add_map((0, 0), map_gen.get_map_gen_direction(player1.pos, 10, 100), map_size)
+
+    # Kui lähed 10 sammu kaugusele mapi äärest genereeri sinna äärde uus map.
+    if map_gen.get_map_gen_direction(player1.pos, 10, map_size) != (0, 0):
+        World_map.add_map((0, 0), map_gen.get_map_gen_direction(player1.pos, 10, map_size), map_size)
     print(World_map.map_dict)
 
 
