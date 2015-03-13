@@ -116,10 +116,11 @@ class ShootBullet(pygame.sprite.Sprite):
         self.pos[1] += self.speed_y * math.sin(self.angle)
         self.rect.x = self.pos[0] * in_game.block_size + in_game.camera_pos[0]
         self.rect.y = self.pos[1] * in_game.block_size + in_game.camera_pos[1]
+        self.collision_detect()
 
     def collision_detect(self):
         if self.pos[0]+self.speed_x*math.cos(self.angle) >= 0 and self.pos[1]+self.speed_y*math.sin(self.angle) >= 0 and self.pos[0]+self.speed_x*math.cos(self.angle) < in_game.map_size and self.pos[1]+self.speed_y*math.sin(self.angle) < in_game.map_size:
-            if in_game.map_list[self.pos[1]+self.speed_y*math.sin(self.angle)][self.pos[0]+self.speed_x** math.sin(self.angle)] == 1:
+            if in_game.map_list[int(self.pos[1]+self.speed_y*math.sin(self.angle))][int(self.pos[0]+self.speed_x** math.sin(self.angle))] == 1:
                 try:
                     for dy, dx in itertools.product(range(-1, 2), repeat=2):
                         # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
