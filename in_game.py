@@ -70,8 +70,6 @@ def init():
     global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup
     # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
 
-
-
     # genereerib kaardi
     World_map = map_gen.Whole_map(map_size)
 
