@@ -118,12 +118,14 @@ def on_event(event):
         elif event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
             player1.speed_x = 0
 
-    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+    elif event.type == pygame.MOUSEBUTTONDOWN:
         mouse_pos = pygame.mouse.get_pos()
         mouse_click_pos = [(mouse_pos[0]-camera_pos[0])//block_size, (mouse_pos[1]-camera_pos[1])//block_size]
-        #player1.mine_block(mouse_click_pos)
-        bullet = game_classes.ShootBullet(player1.pos, mouse_click_pos)
-        bulletGroup.add(bullet)
+        if event.button == 1:
+            player1.mine_block(mouse_click_pos)
+        elif event.button == 3:
+            bullet = game_classes.ShootBullet(player1.pos, mouse_click_pos)
+            bulletGroup.add(bullet)
 
 def draw(screen, ms):
     global camera_pos, World_map
