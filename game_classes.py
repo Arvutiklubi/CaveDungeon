@@ -88,7 +88,7 @@ class ShootBullet(pygame.sprite.Sprite):
         self.speed_y = 0.5
         self.angle = math.atan2(self.mouse_click_pos[1] - self.pos[1], self.mouse_click_pos[0] - self.pos[0])
 
-        self.damage = 20
+        self.damage = 10
 
     def update(self, screen):
         self.pos[0] += self.speed_x * math.cos(self.angle)
