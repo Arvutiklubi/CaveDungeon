@@ -61,6 +61,8 @@ class player():
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
+    #def shoot(self, mouse_click_pos):
+
 
     def create_player(self):
         thatWillDo = False
@@ -69,6 +71,50 @@ class player():
             if in_game.map_list[pos[1]][pos[0]] == 0:
                 thatWillDo = True
         return pos
+
+class ShootBullet(pygame.sprite.Sprite):
+    def __init__(self, player_pos, mouse_click_pos):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([in_game.block_size/2,in_game.block_size/2])
+        self.image.fill((255, 255, 255))
+        self.rect = self.image.get_rect()
+        self.pos = player_pos
+        self.mouse_click_pos = mouse_click_pos
+        self.rect.x = self.pos[0] * in_game.block_size - in_game.camera_pos[0]
+        self.rect.y = self.pos[1] * in_game.block_size - in_game.camera_pos[1]
+
+        #how many blocks the bullet moves at a time
+        self.speed_x = 0.5
+        self.speed_y = 0.5
+        self.angle = math.atan2(self.mouse_click_pos[1] - self.pos[1], self.mouse_click_pos[0] - self.pos[0])
+
+        self.damage = 20
+
+    def update(self, screen):
+        self.pos[0] += self.speed_x * math.cos(self.angle)
+        self.pos[1] += self.speed_y * math.sin(self.angle)
+        self.rect.x = self.pos[0] * in_game.block_size + in_game.camera_pos[0]
+        self.rect.y = self.pos[1] * in_game.block_size + in_game.camera_pos[1]
+
+    def collision_detect(self):
+        if self.pos[0]+self.speed_x*math.cos(self.angle) >= 0 and self.pos[1]+self.speed_y*math.sin(self.angle) >= 0 and self.pos[0]+self.speed_x*math.cos(self.angle) < in_game.map_size and self.pos[1]+self.speed_y*math.sin(self.angle) < in_game.map_size:
+            if in_game.map_list[self.pos[1]+self.speed_y*math.sin(self.angle)][self.pos[0]+self.speed_x** math.sin(self.angle)] == 1:
+                try:
+                    for dy, dx in itertools.product(range(-1, 2), repeat=2):
+                        # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
+                            in_game.map_list[self.mouse_click_pos[1] + dy][self.mouse_click_pos[0] + dx] = 0
+                except: pass
+
+
+            else:
+                return False
+        else:
+            return False
+
+        in_game.draw_map_surface(in_game.block_size)
+        in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+        in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):

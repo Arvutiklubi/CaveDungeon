@@ -67,7 +67,7 @@ def draw_map_surface(block_size):
 
 
 def init():
-    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup
+    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup
     # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
 
 
@@ -84,6 +84,7 @@ def init():
     enemy = game_classes.Enemy()
     enemyGroup = pygame.sprite.Group()
     enemyGroup.add(enemy)
+    bulletGroup = pygame.sprite.Group()
 
     # pind kuhu on joonistatud kaart
     draw_map_surface(block_size)
@@ -120,8 +121,9 @@ def on_event(event):
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
         mouse_pos = pygame.mouse.get_pos()
         mouse_click_pos = [(mouse_pos[0]-camera_pos[0])//block_size, (mouse_pos[1]-camera_pos[1])//block_size]
-        player1.mine_block(mouse_click_pos)
-
+        #player1.mine_block(mouse_click_pos)
+        bullet = game_classes.ShootBullet(player1.pos, mouse_click_pos)
+        bulletGroup.add(bullet)
 
 def draw(screen, ms):
     global camera_pos, World_map
@@ -145,6 +147,8 @@ def draw(screen, ms):
     player1.update(screen)
     enemyGroup.update(screen)
     enemyGroup.draw(screen)
+    bulletGroup.update(screen)
+    bulletGroup.draw(screen)
 
 
     # Kui lähed 10 sammu kaugusele mapi äärest genereeri sinna äärde uus map
