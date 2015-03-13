@@ -100,37 +100,44 @@ class ShootBullet(pygame.sprite.Sprite):
         self.image.fill((255, 255, 255))
         self.rect = self.image.get_rect()
         self.pos = player_pos
-        self.mouse_click_pos = mouse_click_pos
         self.rect.x = self.pos[0] * in_game.block_size - in_game.camera_pos[0]
         self.rect.y = self.pos[1] * in_game.block_size - in_game.camera_pos[1]
 
         # how many blocks the bullet moves at a time
-        self.speed_x = 0.5
-        self.speed_y = 0.5
-        self.angle = math.atan2(self.mouse_click_pos[1] - self.pos[1], self.mouse_click_pos[0] - self.pos[0])
+        self.angle = math.atan2(mouse_click_pos[1] - self.pos[1], mouse_click_pos[0] - self.pos[0])
+        self.speed_x = 0.5*math.cos(self.angle)
+        self.speed_y = 0.5*math.sin(self.angle)
 
         self.damage = 10
 
     def update(self, screen):
-        self.pos[0] += self.speed_x * math.cos(self.angle)
-        self.pos[1] += self.speed_y * math.sin(self.angle)
+        self.pos[0] += self.speed_x
+        self.pos[1] += self.speed_y
         self.rect.x = self.pos[0] * in_game.block_size + in_game.camera_pos[0]
         self.rect.y = self.pos[1] * in_game.block_size + in_game.camera_pos[1]
         self.collision_detect()
 
     def collision_detect(self):
-        if self.pos[0]+self.speed_x*math.cos(self.angle) >= 0 and self.pos[1]+self.speed_y*math.sin(self.angle) >= 0 and self.pos[0]+self.speed_x*math.cos(self.angle) < in_game.map_size and self.pos[1]+self.speed_y*math.sin(self.angle) < in_game.map_size:
-            if in_game.map_list[int(self.pos[1]+self.speed_y*math.sin(self.angle))][int(self.pos[0]+self.speed_x** math.sin(self.angle))] == 1:
-                try:
-                    for dy, dx in itertools.product(range(-1, 2), repeat=2):
-                        # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                            in_game.map_list[self.mouse_click_pos[1] + dy][self.mouse_click_pos[0] + dx] = 0
-                except: pass
+        global bulletGroup
+        # sorry, koledaim kood, aga hetkel t66tab, kustutab kuuli, kui mapist v2ljas.
+        if round(self.pos[0]) >= 0 and round(self.pos[1]) >= 0:
+            try:
+                if in_game.map_list[round(self.pos[1]+self.speed_y)][round(self.pos[0]+self.speed_x)] != 0:
+                    try:
+                        for dy, dx in itertools.product(range(-1, 2), repeat=2):
+                            # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
+                                in_game.map_list[self.pos[1] + dy][self.pos[0] + dx] = 0
+                    except: pass
 
 
-            else:
+                else:
+                    return False
+
+            except:
+                in_game.bulletGroup.remove(self)
                 return False
         else:
+            in_game.bulletGroup.remove(self)
             return False
 
         in_game.draw_map_surface(in_game.block_size)
