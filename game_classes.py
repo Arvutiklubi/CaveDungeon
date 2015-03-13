@@ -88,7 +88,10 @@ class player(Character):
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
-    #def shoot(self, mouse_click_pos):
+    def shoot(self, mouse_click_pos):
+        global bulletGroup
+        bullet = ShootBullet(self.pos, mouse_click_pos)
+        bulletGroup.add(bullet)
 
 class ShootBullet(pygame.sprite.Sprite):
     def __init__(self, player_pos, mouse_click_pos):
