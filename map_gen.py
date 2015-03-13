@@ -244,13 +244,11 @@ def generate_map(map_size):
 
     # Generating monster lairs
     # Generate at most 5 lairs
-    """for i in range(random.randint(0, 5)):
+    for i in range(random.randint(0, 5)):
         try:
             lair_size = random.randint(0, int(random.normalvariate(in_game.map_size/2, 5)))
             map1.add_monster_lair(random.randint(0, in_game.map_size), random.randint(0, in_game.map_size), lair_size)
-      except: pass
-"""
-    map1.add_monster_lair(0, 0, 50)
+        except: pass
 
     # Generating different types of minerals.
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
