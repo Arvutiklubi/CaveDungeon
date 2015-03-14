@@ -12,8 +12,7 @@ if __name__ == '__main__':
     pygame.init()
 
     screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption('Cave')
-    pygame.display.set_caption('CaveDungeon v0.001')
+    pygame.display.set_caption('CaveDungeon v0.002')
 
     clock = pygame.time.Clock()
     ms = clock.tick(40)
