@@ -56,6 +56,7 @@ class Map(object):
         self.Mineral_map = []
         self.Mineral_map2 = []
         self.Mineral_map3 = []
+        self.dropped_items = {}
 
     def print_map(self):
         #currently not used

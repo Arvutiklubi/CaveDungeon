@@ -2,6 +2,13 @@ import pygame, random, math, itertools
 import in_game, main, map_gen, spells
 
 # Omadused, mida k6ik characterid peaksid omama
+
+def block_delete(pos_y, pos_x):
+    if in_game.map_list[pos_y][pos_x] == 4:
+        in_game.World_map.map_dict[(0, 0)].dropped_items.update({(pos_y, pos_x): "asi"})
+    in_game.map_list[pos_y][pos_x] = 0
+
+
 class Character:
     def __init__(self, pos, health=100, max_health=100):
         self.pos = pos
@@ -31,6 +38,7 @@ class Character:
             if in_game.map_list[pos[1]][pos[0]] == 0:
                 thatWillDo = True
         return pos
+
 
 # Omadused, mis on iseloomulikud vastastele
 class Enemy(Character, pygame.sprite.Sprite):
@@ -79,16 +87,16 @@ class player(Character):
 
 
     def mine_block(self, mouse_click_pos):
-                try:
-                    if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
-                        for dy, dx in itertools.product(range(-3, 4), repeat=2):
-                            # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                            in_game.map_list[mouse_click_pos[1] + dy][mouse_click_pos[0] + dx] = 0
-                except: pass
+        try:
+            if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
+                for dy, dx in itertools.product(range(-3, 4), repeat=2):
+                    # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
+                    block_delete(mouse_click_pos[1] + dy, mouse_click_pos[0] + dx)
+        except: pass
 
-                in_game.draw_map_surface(in_game.block_size)
-                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
-                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+        in_game.draw_map_surface(in_game.block_size)
+        in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
 
 
     def shoot(self, mouse_click_pos):

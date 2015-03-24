@@ -36,9 +36,9 @@ class Bullet(pygame.sprite.Sprite):
             if radius != 0:
                 for dy, dx in itertools.product(range(-radius, radius+1), repeat=2):
                         # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                        in_game.map_list[round(self.pos[1] + dy)][round(self.pos[0] + dx)] = 0
+                        game_classes.block_delete(round(self.pos[1] + self.speed_y + dy), round(self.pos[0] + self.speed_x + dx))
             else:
-                in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_x)] = 0
+                game_classes.block_delete(round(self.pos[1] + self.speed_y + dy), round(self.pos[0] + self.speed_x + dx))
 
         except: pass
 
@@ -51,7 +51,7 @@ class Bullet(pygame.sprite.Sprite):
 
                 in_game.draw_map_surface(in_game.block_size)
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
-                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
 
                 in_game.bulletGroup.remove(self)
         except: in_game.bulletGroup.remove(self)

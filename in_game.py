@@ -22,6 +22,7 @@ def draw_minimap(block_size, surface_size):
         2 : (75, 75, 75),
         3 : (30,  0,  0),
         4 : (10, 100, 100),
+        5 : (100,  0, 100),
     }
 
     # Pind, kuhu joonistatkase kaart
@@ -54,6 +55,7 @@ def draw_map_surface(block_size):
         2 : (80, 80, 80),
         3 : (30,  0,  0),
         4 : (10, 100, 100),
+        5 : (100,  0, 100),
     }
 
     # pind kuhu joonistatakse kaart
@@ -67,6 +69,9 @@ def draw_map_surface(block_size):
         row +=1
         colomn = 0
 
+    for item in World_map.map_dict[(0, 0)].dropped_items:
+        map_surface.fill(colors[5], (block_size*item[1], block_size*item[0], block_size, block_size))
+
 
 def init():
     global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup
@@ -75,9 +80,10 @@ def init():
     # genereerib kaardi
     World_map = map_gen.Whole_map(map_size)
 
-    # list mis sisaldab kaarti, y koord on esimene index x koord on teine index
+    # list mis sisaldab kaarti. y koord on esimene index, x koord on teine index
     # esialgne map_list on world_mapi (0, 0) element. See juhtub olema Map objekt. Map objektist tahame map listi.
     map_list = World_map.map_dict[(0, 0)].map
+    World_map.map_dict[(0, 0)].dropped_items
 
     camera_pos = [0, 0]
     player1 = game_classes.player([10, 10])
