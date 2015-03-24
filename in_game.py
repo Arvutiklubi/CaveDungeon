@@ -139,8 +139,7 @@ def draw(screen, ms):
     camera_pos = [main.screen_width//2 + block_size//2 - (player1.pos[0]+1) * block_size, main.screen_height//2 - (player1.pos[1]) * block_size]
     screen.blit(map_surface, camera_pos)
 
-    # uuendame minimapi iga kaader
-    screen.blit(minimap_update(mm_block_size, mm_surface_size, player1.pos), (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
+
 
     # joonistab minimap'i indikaatori
     screen.fill((255, 0, 0), (main.screen_width - mm_surface_size//2 - 1, main.screen_height - mm_surface_size//2, mm_surface_size//50, mm_surface_size//50))
@@ -153,6 +152,8 @@ def draw(screen, ms):
     bulletGroup.update(screen)
     bulletGroup.draw(screen)
 
+    # uuendame minimapi iga kaader
+    screen.blit(minimap_update(mm_block_size, mm_surface_size, player1.pos), (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
 
     # Kui lähed 10 sammu kaugusele mapi äärest genereeri sinna äärde uus map
     if map_gen.get_map_gen_direction(player1.pos, 10, map_size) != (0, 0):

@@ -126,27 +126,26 @@ class Bullet(pygame.sprite.Sprite):
         self.delete()
 
     def explode(self, radius):
-        #try:
-        for dy, dx in itertools.product(range(-radius, radius+1), repeat=2):
-            if math.sqrt((dy + self.pos[1])**2 + (dx + self.pos[0])**2) <= radius:
-                # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                in_game.map_list[round(self.pos[1] + self.speed_y + dy)][round(self.pos[0] + self.speed_x + dx)] = 0
+        try:
+            for dy, dx in itertools.product(range(-radius, radius+1), repeat=2):
+                    # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
+                    in_game.map_list[round(self.pos[1] + self.speed_y + dy)][round(self.pos[0] + self.speed_x + dx)] = 0
 
-        #except: pass
+        except: pass
 
     def collision_detect(self, screen):
         global bulletGroup, map_list
-        #try:
-        if in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_x)] != 0:
-            #in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] = 0
-            self.explode(3)
+        try:
+            if in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_x)] != 0:
+                #in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] = 0
+                self.explode(1)
 
-            in_game.draw_map_surface(in_game.block_size)
-            in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
-            in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+                in_game.draw_map_surface(in_game.block_size)
+                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
-            in_game.bulletGroup.remove(self)
-        #except: in_game.bulletGroup.remove(self)
+                in_game.bulletGroup.remove(self)
+        except: in_game.bulletGroup.remove(self)
 
     def delete(self):
         if pygame.time.get_ticks() - self.starttick >= self.lifetime:
