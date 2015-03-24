@@ -61,7 +61,7 @@ class player(Character):
         self.pos_onscreen = [main.screen_width//2 - self.size[0]/2, main.screen_height//2 - self.size[1]/2]
         self.color = [255, 10, 10]
 
-        self.block_mine_range = 5.5
+        self.block_mine_range = 20
 
     def update(self, screen):
         # esimene: kolmnurga alus; teine: vasak haar; kolmas: parem haar
@@ -79,7 +79,7 @@ class player(Character):
     def mine_block(self, mouse_click_pos):
                 try:
                     if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
-                        for dy, dx in itertools.product(range(-1, 2), repeat=2):
+                        for dy, dx in itertools.product(range(-3, 4), repeat=2):
                             # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
                             in_game.map_list[mouse_click_pos[1] + dy][mouse_click_pos[0] + dx] = 0
                 except: pass
@@ -115,31 +115,21 @@ class ShootBullet(pygame.sprite.Sprite):
         self.pos[1] += self.speed_y
         self.rect.x = self.pos[0] * in_game.block_size + in_game.camera_pos[0]
         self.rect.y = self.pos[1] * in_game.block_size + in_game.camera_pos[1]
-        self.collision_detect()
+        self.collision_detect(screen)
 
-    def collision_detect(self):
-        global bulletGroup
-        # sorry, koledaim kood, aga hetkel t66tab, kustutab kuuli, kui mapist v2ljas.
-        if round(self.pos[0]) >= 0 and round(self.pos[1]) >= 0:
-            try:
-                if in_game.map_list[round(self.pos[1]+self.speed_y)][round(self.pos[0]+self.speed_x)] != 0:
-                    try:
-                        for dy, dx in itertools.product(range(-1, 2), repeat=2):
-                            # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                                in_game.map_list[self.pos[1] + dy][self.pos[0] + dx] = 0
-                    except: pass
+    def explode(self, radius):
+        global map_list
 
+        for dx, dy in range()
 
-                else:
-                    return False
+    def collision_detect(self, screen):
+        global bulletGroup, map_list
+        if in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] != 0:
+            in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] = 0
 
-            except:
-                in_game.bulletGroup.remove(self)
-                return False
-        else:
+            in_game.draw_map_surface(in_game.block_size)
+            in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+            in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
             in_game.bulletGroup.remove(self)
-            return False
 
-        in_game.draw_map_surface(in_game.block_size)
-        in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
-        in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)

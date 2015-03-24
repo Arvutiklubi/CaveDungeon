@@ -241,7 +241,7 @@ def generate_map(map_size):
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
     for i in range(7): map1.map_iter(map1.iter_rule2)
-
+    map1.add_monster_lair(0, 0, 50)
     # Generating monster lairs
     # Generate at most 5 lairs
     for i in range(random.randint(0, 5)):
@@ -252,7 +252,7 @@ def generate_map(map_size):
 
     # Generating different types of minerals.
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
-    #map1.generate_minerals(probability=1, id=3, probability2=5**2-1, grid_sz=5)
+    map1.generate_minerals(probability=0.1, id=3, probability2=5**2-1, grid_sz=5)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
 
     return map1

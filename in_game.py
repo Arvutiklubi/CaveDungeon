@@ -21,6 +21,7 @@ def draw_minimap(block_size, surface_size):
         1 : (65, 65, 65),
         2 : (75, 75, 75),
         3 : (30,  0,  0),
+        4 : (10, 100, 100),
     }
 
     # Pind, kuhu joonistatkase kaart
