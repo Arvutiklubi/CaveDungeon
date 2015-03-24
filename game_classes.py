@@ -95,5 +95,3 @@ class player(Character):
         global bulletGroup
         bullet = spells.Bullet(self.pos, mouse_click_pos)
         in_game.bulletGroup.add(bullet)
-
-
