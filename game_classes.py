@@ -124,8 +124,7 @@ class ShootBullet(pygame.sprite.Sprite):
         self.collision_detect(screen)
         self.delete()
 
-    def
-    def collision_detect(self, screen): explode(self, radius):
+    def explode(self, radius):
         #try:
         for dy, dx in itertools.product(range(-radius, radius+1), repeat=2):
             if math.sqrt((dy + self.pos[1])**2 + (dx + self.pos[0])**2) <= radius:
@@ -134,6 +133,7 @@ class ShootBullet(pygame.sprite.Sprite):
 
         #except: pass
 
+    def collision_detect(self, screen):
         global bulletGroup, map_list
         #try:
         if in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_x)] != 0:
