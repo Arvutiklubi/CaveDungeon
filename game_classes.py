@@ -76,6 +76,7 @@ class player(Character):
         elif self.dir == "x":
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]]
 
+
     def mine_block(self, mouse_click_pos):
                 try:
                     if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
@@ -88,14 +89,14 @@ class player(Character):
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
+
     def shoot(self, mouse_click_pos):
         global bulletGroup
-        bullet = ShootBullet(self.pos, mouse_click_pos)
+        bullet = Bullet(self.pos, mouse_click_pos)
         in_game.bulletGroup.add(bullet)
 
-    #def secretwep(self):
 
-class ShootBullet(pygame.sprite.Sprite):
+class Bullet(pygame.sprite.Sprite):
     def __init__(self, player_pos, mouse_click_pos):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([in_game.block_size/2,in_game.block_size/2])

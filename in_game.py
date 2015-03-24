@@ -124,7 +124,7 @@ def on_event(event):
         if event.button == 1:
             player1.mine_block(mouse_click_pos)
         elif event.button == 3:
-            #bullet = game_classes.ShootBullet(player1.pos, mouse_click_pos)
+            #bullet = game_classes.Bullet(player1.pos, mouse_click_pos)
             #bulletGroup.add(bullet)
             player1.shoot(mouse_click_pos)
 
