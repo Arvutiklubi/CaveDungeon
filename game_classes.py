@@ -6,6 +6,7 @@ import in_game, main, map_gen, spells
 def block_delete(pos_y, pos_x):
     if in_game.map_list[pos_y][pos_x] == 4:
         in_game.World_map.map_dict[(0, 0)].dropped_items.update({(pos_y, pos_x): "asi"})
+        print(in_game.World_map.map_dict[(0, 0)].dropped_items)
     in_game.map_list[pos_y][pos_x] = 0
 
 
@@ -16,6 +17,7 @@ class Character:
         self.speed_y = 0
         self.health = health
         self.max_health = max_health
+        self.inventory = []
 
     def collision_detect(self):
         self.dir = ""
@@ -38,6 +40,17 @@ class Character:
             if in_game.map_list[pos[1]][pos[0]] == 0:
                 thatWillDo = True
         return pos
+
+    def pick_loot(self):
+        for item_pos in in_game.World_map.map_dict[(0, 0)].dropped_items:
+            if [item_pos[0], item_pos[1]] == [self.pos[1], self.pos[0]]:
+                print("jaanus")
+                self.inventory.append(in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos])
+                print(self.inventory)
+                del in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]
+            break
+
+        #print(self.pos)
 
 
 # Omadused, mis on iseloomulikud vastastele
@@ -84,6 +97,7 @@ class player(Character):
             self.pos = [self.pos[0], self.pos[1]+self.speed_y]
         elif self.dir == "x":
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]]
+        self.pick_loot()
 
 
     def mine_block(self, mouse_click_pos):

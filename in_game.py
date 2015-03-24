@@ -83,7 +83,6 @@ def init():
     # list mis sisaldab kaarti. y koord on esimene index, x koord on teine index
     # esialgne map_list on world_mapi (0, 0) element. See juhtub olema Map objekt. Map objektist tahame map listi.
     map_list = World_map.map_dict[(0, 0)].map
-    World_map.map_dict[(0, 0)].dropped_items
 
     camera_pos = [0, 0]
     player1 = game_classes.player([10, 10])
