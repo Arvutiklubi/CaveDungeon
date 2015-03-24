@@ -126,8 +126,9 @@ class Bullet(pygame.sprite.Sprite):
         self.delete()
 
     def explode(self, radius):
+        #r = int((radius - 1) / 2)
         try:
-            for dy, dx in itertools.product(range(-radius, radius+1), repeat=2):
+            for dy, dx in itertools.product(range(0, radius), repeat=2):
                     # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
                     in_game.map_list[round(self.pos[1] + self.speed_y + dy)][round(self.pos[0] + self.speed_x + dx)] = 0
 
@@ -138,7 +139,7 @@ class Bullet(pygame.sprite.Sprite):
         try:
             if in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_x)] != 0:
                 #in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] = 0
-                self.explode(1)
+                self.explode(3)
 
                 in_game.draw_map_surface(in_game.block_size)
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
