@@ -117,11 +117,6 @@ class ShootBullet(pygame.sprite.Sprite):
         self.rect.y = self.pos[1] * in_game.block_size + in_game.camera_pos[1]
         self.collision_detect(screen)
 
-    def explode(self, radius):
-        global map_list
-
-        for dx, dy in range()
-
     def collision_detect(self, screen):
         global bulletGroup, map_list
         if in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] != 0:

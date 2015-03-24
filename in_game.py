@@ -53,6 +53,7 @@ def draw_map_surface(block_size):
         1 : (70, 70, 70),
         2 : (80, 80, 80),
         3 : (30,  0,  0),
+        4 : (10, 100, 100),
     }
 
     # pind kuhu joonistatakse kaart
