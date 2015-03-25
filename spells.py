@@ -1,4 +1,4 @@
-import in_game, map_gen, main, game_classes
+import in_game, map_gen, main, game_classes, vars
 import math, itertools, pygame
 
 class Bullet(pygame.sprite.Sprite):

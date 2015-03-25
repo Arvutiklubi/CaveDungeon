@@ -258,8 +258,8 @@ def generate_map(map_size):
 
     # Generating different types of minerals.
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
-    map1.generate_minerals(probability=0.05, id=11, probability2=3**2-1, grid_sz=3)
-    map1.generate_minerals(probability=0.02, id=12, probability2=3**2-1, grid_sz=3)
+    map1.generate_minerals(probability=0.01, id=11, probability2=3**2-1, grid_sz=3)
+    map1.generate_minerals(probability=0.05, id=12, probability2=3**2-1, grid_sz=3)
     map1.generate_minerals(probability=0.01, id=13, probability2=3**2-1, grid_sz=3)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
 

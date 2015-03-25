@@ -22,7 +22,9 @@ class Character:
     def collision_detect(self):
         self.dir = ""
         if self.pos[0]+self.speed_x >= 0 and self.pos[1]+self.speed_y >= 0 and self.pos[0]+self.speed_x < in_game.map_size and self.pos[1]+self.speed_y < in_game.map_size:
-            if in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]+self.speed_x] == 0:
+            if in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] != 0 and in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] != 0:
+                return False
+            elif in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]+self.speed_x] == 0:
                 return True
             elif in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] != 0 and in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] == 0:
                 self.dir = "y"

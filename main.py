@@ -1,4 +1,4 @@
-import pygame, sys, in_game
+import pygame, sys, in_game, vars
 
 # Ehk oleks ilus teha tekstifail selliste globaalsete muutujate jaoks?
 screen_width, screen_height = 800, 600
