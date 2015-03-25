@@ -116,6 +116,9 @@ def on_event(event):
         elif event.key == pygame.K_RIGHT:
             player1.speed_x = 1
 
+        elif event.key == pygame.K_e:
+            player1.display_inventory()
+
     elif event.type == pygame.KEYUP:
         if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
             player1.speed_y = 0
