@@ -139,7 +139,7 @@ def on_event(event):
         elif event.button == 3:
             #bullet = game_classes.Bullet(player1.pos, mouse_click_pos)
             #bulletGroup.add(bullet)
-            player1.shoot(mouse_click_pos)
+            player1.is_shooting = True
 
 def draw(screen, ms):
     global camera_pos, World_map
@@ -156,7 +156,6 @@ def draw(screen, ms):
 
     # joonistab minimap'i indikaatori
     screen.fill((255, 0, 0), (main.screen_width - mm_surface_size//2 - 1, main.screen_height - mm_surface_size//2, mm_surface_size//50, mm_surface_size//50))
-
 
 
     player1.update(screen)
