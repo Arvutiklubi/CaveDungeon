@@ -42,7 +42,7 @@ class Character:
 
     def pick_loot(self):
         for item_pos, item in list(in_game.World_map.map_dict[(0, 0)].dropped_items.items()):
-            for dx, dy in itertools.product(range(-2,3), repeat=2):
+            for dx, dy in itertools.product(range(-2, 3), repeat=2):
                 if item_pos[::-1] == tuple(map(sum, zip(tuple(self.pos), (dx, dy)))):
                     if item in self.inventory:
                         value = self.inventory.get(item)
