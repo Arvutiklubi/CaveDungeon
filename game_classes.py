@@ -93,6 +93,7 @@ class player(Character):
         self.pos_onscreen = [main.screen_width//2 - self.size[0]/2, main.screen_height//2 - self.size[1]/2]
         self.color = [255, 10, 10]
 
+        self.is_shooting = False
         self.block_mine_range = 20
 
     def update(self, screen):
@@ -116,7 +117,7 @@ class player(Character):
             if (((mouse_click_pos[0] - self.pos[0])**2 + (mouse_click_pos[1] - self.pos[1])**2)**(0.5)) <= self.block_mine_range:
                 for dy, dx in itertools.product(range(-3, 4), repeat=2):
                     # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
-                    block_delete(mouse_click_pos[1] + dy, mouse_click_pos[0] + dx)
+                    block_delete(mouse_click_pos[1] + int(dy), mouse_click_pos[0] + int(dx))
         except: pass
 
         in_game.draw_map_surface(in_game.block_size)
