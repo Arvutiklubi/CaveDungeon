@@ -6,7 +6,6 @@ import in_game, main, map_gen, spells
 def block_delete(pos_y, pos_x):
     if in_game.map_list[pos_y][pos_x] == 4:
         in_game.World_map.map_dict[(0, 0)].dropped_items.update({(pos_y, pos_x): "asi"})
-        print(in_game.World_map.map_dict[(0, 0)].dropped_items)
     in_game.map_list[pos_y][pos_x] = 0
 
 
@@ -42,15 +41,18 @@ class Character:
         return pos
 
     def pick_loot(self):
-        for item_pos in in_game.World_map.map_dict[(0, 0)].dropped_items:
-            if [item_pos[0], item_pos[1]] == [self.pos[1], self.pos[0]]:
-                print("jaanus")
-                self.inventory.append(in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos])
-                print(self.inventory)
-                del in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]
-            break
+        for item_pos in list(in_game.World_map.map_dict[(0, 0)].dropped_items.keys()):
+            if item_pos[::-1] == tuple(self.pos):
 
-        #print(self.pos)
+                self.inventory.append(in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos])
+                del in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]
+
+
+                in_game.draw_map_surface(in_game.block_size)
+                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
+
+
 
 
 # Omadused, mis on iseloomulikud vastastele
@@ -97,6 +99,7 @@ class player(Character):
             self.pos = [self.pos[0], self.pos[1]+self.speed_y]
         elif self.dir == "x":
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]]
+
         self.pick_loot()
 
 
