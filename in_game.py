@@ -139,7 +139,7 @@ def on_event(event):
         elif event.button == 3:
             #bullet = game_classes.Bullet(player1.pos, mouse_click_pos)
             #bulletGroup.add(bullet)
-            player1.is_shooting = True
+            player1.shoot(mouse_click_pos)
 
 def draw(screen, ms):
     global camera_pos, World_map

@@ -1,5 +1,5 @@
-import pygame, random, math, itertools, vars
-import in_game, main, map_gen, spells
+import pygame, random, math, itertools, sys
+import in_game, main, map_gen, spells, vars
 
 # Omadused, mida k6ik characterid peaksid omama
 
@@ -59,8 +59,10 @@ class Character:
                     in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
     def display_inventory(self):
+        print('=======================')
         for item, count in self.inventory.items():
             print(item, "x",count)
+
 
 
 # Omadused, mis on iseloomulikud vastastele
