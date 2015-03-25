@@ -43,17 +43,18 @@ class Character:
 
     def pick_loot(self):
         for item_pos, item in list(in_game.World_map.map_dict[(0, 0)].dropped_items.items()):
-            if item_pos[::-1] == tuple(self.pos):
-                if item in self.inventory:
-                    value = self.inventory.get(item)
-                    self.inventory.update({item: value+1})
-                else:
-                    self.inventory.update({in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]: 1})
-                del in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]
+            for dx, dy in itertools.product(range(-2, 3), repeat=2):
+                if item_pos[::-1] == tuple(map(sum, zip(tuple(self.pos), (dx, dy)))):
+                    if item in self.inventory:
+                        value = self.inventory.get(item)
+                        self.inventory.update({item: value+1})
+                    else:
+                        self.inventory.update({in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]: 1})
+                    del in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]
 
 
-                in_game.draw_map_surface(in_game.block_size)
-                in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+                    in_game.draw_map_surface(in_game.block_size)
+                    in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
     def display_inventory(self):
         for item, count in self.inventory.items():
