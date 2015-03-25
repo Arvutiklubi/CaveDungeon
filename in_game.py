@@ -17,12 +17,15 @@ def draw_minimap(block_size, surface_size):
 
     # v2rvid millega joonistatakse kõnnitava ala ja kivimid
     colors = {
-        0 : (25, 25, 25),
-        1 : (65, 65, 65),
-        2 : (75, 75, 75),
-        3 : (30,  0,  0),
-        4 : (10, 100, 100),
-        5 : (100,  0, 100),
+         0 : ( 25,  25,  25),
+         1 : ( 65,  65,  65),
+         2 : ( 75,  75,  75),
+         3 : ( 30,   0,   0),
+         4 : (100,   0, 100),
+        11 : ( 10, 100, 100),
+        12 : (100, 100,   0),
+        13 : (  0,   0, 100),
+
     }
 
     # Pind, kuhu joonistatkase kaart
@@ -50,12 +53,14 @@ def draw_map_surface(block_size):
 
     # värvid millega joonistatakse kõnnitava ala ja kivimid
     colors = {
-        0 : (10, 10, 10),
-        1 : (70, 70, 70),
-        2 : (80, 80, 80),
-        3 : (30,  0,  0),
-        4 : (10, 100, 100),
-        5 : (100,  0, 100),
+         0 : ( 10,  10,  10),
+         1 : ( 70,  70,  70),
+         2 : ( 80,  80,  80),
+         3 : ( 30,   0,   0),
+         4 : (100,   0, 100),
+        11 : ( 10, 100, 100),
+        12 : (100, 100,   0),
+        13 : (  0,   0, 100),
     }
 
     # pind kuhu joonistatakse kaart
@@ -70,7 +75,7 @@ def draw_map_surface(block_size):
         colomn = 0
 
     for item in World_map.map_dict[(0, 0)].dropped_items:
-        map_surface.fill(colors[5], (block_size*item[1], block_size*item[0], block_size, block_size))
+        map_surface.fill(colors[4], (block_size*item[1], block_size*item[0], block_size, block_size))
 
 
 def init():

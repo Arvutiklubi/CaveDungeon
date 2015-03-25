@@ -53,9 +53,14 @@ class Map(object):
         self.monster_lairs = []
         self.map = [[random.randint(0, 1) for i in range(self.width)] for j in range(self.height)]
         self.Rect_map = []
-        self.Mineral_map = []
-        self.Mineral_map2 = []
-        self.Mineral_map3 = []
+        """self.mineral_map = {
+            1: [],
+            2: [],
+            3: []
+        }"""
+        #self.Mineral_map = []
+        #self.Mineral_map2 = []
+        #self.Mineral_map3 = []
         self.dropped_items = {}
 
     def print_map(self):
@@ -253,7 +258,9 @@ def generate_map(map_size):
 
     # Generating different types of minerals.
     map1.generate_minerals(probability=1, id=2, probability2=3**2-1, grid_sz=3)
-    map1.generate_minerals(probability=0.1, id=4, probability2=5**2-1, grid_sz=5)
+    map1.generate_minerals(probability=0.05, id=11, probability2=3**2-1, grid_sz=3)
+    map1.generate_minerals(probability=0.02, id=12, probability2=3**2-1, grid_sz=3)
+    map1.generate_minerals(probability=0.01, id=13, probability2=3**2-1, grid_sz=3)
     #map1.generate_minerals(probability=1, id=4, probability2=7**2-1, grid_sz=7)
 
     return map1

@@ -1,11 +1,12 @@
-import pygame, random, math, itertools
+import pygame, random, math, itertools, vars
 import in_game, main, map_gen, spells
 
 # Omadused, mida k6ik characterid peaksid omama
 
 def block_delete(pos_y, pos_x):
-    if in_game.map_list[pos_y][pos_x] == 4:
-        in_game.World_map.map_dict[(0, 0)].dropped_items.update({(pos_y, pos_x): "asi"})
+    for ID in vars.item_ID.keys():
+        if in_game.map_list[pos_y][pos_x] == ID:
+            in_game.World_map.map_dict[(0, 0)].dropped_items.update({(pos_y, pos_x): vars.item_ID[ID]})
     in_game.map_list[pos_y][pos_x] = 0
 
 
