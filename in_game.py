@@ -10,7 +10,6 @@ def fps_counter(screen, ms):
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
     screen.blit(fps_surface, (0, 0))
 
-
 def draw_minimap(block_size, surface_size):
     global minimap_surface
     row, column = 0, 0
@@ -39,13 +38,12 @@ def draw_minimap(block_size, surface_size):
         row += 1
         column = 0
 
-
 def minimap_update(block_size, surface_size, player_pos):
     minimap_seqment = minimap_surface.subsurface((block_size * player_pos[0], block_size * player_pos[1], surface_size, surface_size))
     return minimap_seqment
 
 def draw_map_surface(block_size):
-    global map_surface
+    global map_surface_dict
 
     # abistavad muutujad
     row = 0
@@ -64,19 +62,55 @@ def draw_map_surface(block_size):
     }
 
     # pind kuhu joonistatakse kaart
-    map_surface = pygame.Surface((map_size*block_size, map_size*block_size))
+    map_surface_dict = {}
 
     # kaardi joonistamine ridade kaupa
-    for i in range(0, len(map_list)):
-        for j in map_list[i]:
-            map_surface.fill(colors[j], (block_size*colomn, block_size*row, block_size, block_size))
-            colomn += 1
-        row +=1
-        colomn = 0
+    for x in World_map.map_dict:
+        #print(len(World_map.map_dict[x].map), len(World_map.map_dict[x].map[0]))
+        map_surface_dict[x] = pygame.Surface((map_size*block_size, map_size*block_size))
+        for i in range(len(World_map.map_dict[x].map)):
+            for j in World_map.map_dict[x].map[i]:
+                map_surface_dict[x].fill(colors[j], (block_size*colomn, block_size*row, block_size, block_size))
+                colomn += 1
+            row +=1
+            colomn = 0
+
+        row = 0
+        column = 0
 
     for item in World_map.map_dict[(0, 0)].dropped_items:
-        map_surface.fill(colors[4], (block_size*item[1], block_size*item[0], block_size, block_size))
+        map_surface_dict[(0, 0)].fill(colors[4], (block_size*item[1], block_size*item[0], block_size, block_size))
 
+    join_maps()
+
+def join_maps():
+    global World_map, map_surface_dict, whole_map_surface, greatest_negative_x, greatest_positive_y, greatest_positive_x, greatest_negative_y
+
+    whole_map_size_x = 0
+    whole_map_size_y = 0
+
+    greatest_positive_x = 0
+    greatest_negative_x = 0
+    greatest_positive_y = 0
+    greatest_negative_y = 0
+
+    for i in map_surface_dict:
+        if i[0] > greatest_positive_x and i[0] > 0:
+            greatest_positive_x = i[0]
+        if i[0] < greatest_negative_x and i[0] < 0:
+            greatest_negative_x = i[0]
+        if i[1] > greatest_positive_y and i[1] > 0:
+            greatest_positive_y = i[1]
+        if i[1] < greatest_negative_y and i[1] < 0:
+            greatest_negative_y = i[1]
+
+    whole_map_size_x = greatest_positive_x + abs(greatest_negative_x) + 1
+    whole_map_size_y = greatest_positive_y + abs(greatest_negative_y) + 1
+
+    whole_map_surface = pygame.Surface((whole_map_size_x*map_size*block_size, whole_map_size_y*map_size*block_size))
+
+    for i in map_surface_dict:
+        whole_map_surface.blit(map_surface_dict[i], ((abs(greatest_negative_x) + i[0]) * map_size * block_size, (greatest_positive_y - i[1]) * map_size * block_size))
 
 def init():
     global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup
@@ -103,9 +137,8 @@ def init():
     # pygame'i standartne font
     std_font = pygame.font.Font(None, 16)
 
-
 def on_event(event):
-    global player1, mouse_click_pos
+    global player1, mouse_click_pos, map_surface_dict
     global map1
 
     if event.type == pygame.KEYDOWN:
@@ -123,6 +156,9 @@ def on_event(event):
 
         elif event.key == pygame.K_e:
             player1.display_inventory()
+
+        elif event.key == pygame.K_p:
+            pygame.image.save(whole_map_surface, 'pic.jpeg')
 
     elif event.type == pygame.KEYUP:
         if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -150,13 +186,11 @@ def draw(screen, ms):
     # y-suund : pool ekraanist - mängja asukoht * ruudu suurus
     # imelikud liitmised ja lahutamised on imeliku, sest.
     camera_pos = [main.screen_width//2 + block_size//2 - (player1.pos[0]+1) * block_size, main.screen_height//2 - (player1.pos[1]) * block_size]
-    screen.blit(map_surface, camera_pos)
 
-
+    screen.blit(whole_map_surface, (camera_pos[0]-abs(greatest_negative_x)*map_size*block_size, camera_pos[1]-greatest_positive_y*map_size*block_size))
 
     # joonistab minimap'i indikaatori
     screen.fill((255, 0, 0), (main.screen_width - mm_surface_size//2 - 1, main.screen_height - mm_surface_size//2, mm_surface_size//50, mm_surface_size//50))
-
 
     player1.update(screen)
     enemyGroup.update(screen)

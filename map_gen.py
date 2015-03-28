@@ -15,9 +15,9 @@ def get_map_gen_direction(player_pos, threshold, map_size):
         direction[0] = 1
 
     if player_pos[1] < threshold:
-        direction[1] = -1
-    elif player_pos[1] > abs(map_size - threshold):
         direction[1] = 1
+    elif player_pos[1] > abs(map_size - threshold):
+        direction[1] = -1
 
     return direction
 
@@ -32,6 +32,8 @@ class Whole_map(object):
         if new_map_idx not in self.map_dict:
 
             self.map_dict.update({new_map_idx: generate_map(map_size)})
+
+            in_game.draw_map_surface(in_game.block_size)
 
 
 
