@@ -113,6 +113,10 @@ def on_event(event):
     global player1, mouse_click_pos
     global map1
 
+    if event.type == pygame.MOUSEMOTION and player1.flamethrower:
+        mouse_click_pos = [(event.pos[0]-camera_pos[0])//block_size, (event.pos[1]-camera_pos[1])//block_size]
+        #print('a')
+
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_UP:
             player1.speed_y = -1

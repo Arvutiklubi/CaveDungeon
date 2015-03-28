@@ -162,6 +162,6 @@ class player(Character):
             angle = math.atan2(mouse_pos[1] - self.pos[1], mouse_pos[0] - self.pos[0])
             rand = random.uniform(-math.pi/8, math.pi/8)
             # multiplied with 100 for numerical stability. Doesn't do anything else.
-            self.shoot([math.cos(angle+rand)*100, math.sin(angle+rand)*100], lifetime=600,
+            self.shoot([math.cos(angle+rand)*100000, math.sin(angle+rand)*100000], lifetime=600,
                        explode_size=3)
 
