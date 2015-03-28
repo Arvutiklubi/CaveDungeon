@@ -146,9 +146,9 @@ class player(Character):
         in_game.draw_map_surface(in_game.block_size)
         in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
-    def shoot(self, mouse_click_pos, lifetime=30000, explode_size=3):
+    def shoot(self, mouse_click_pos, lifetime=30000, explode_size=3, color=(255, 255, 255)):
         #global bulletGroup
-        bullet = spells.Bullet(self.pos, mouse_click_pos, lifetime, explode_size)
+        bullet = spells.Fireparticle(self.pos, mouse_click_pos, lifetime, explode_size, color=color)
         in_game.bulletGroup.add(bullet)
 
     """def flip(self):
@@ -159,5 +159,9 @@ class player(Character):
 
     def ft(self, mouse_pos):
         if self.flamethrower:
-            rand = random.randint(-5, 5)
-            self.shoot([mouse_pos[0]+rand, mouse_pos[1]+rand], lifetime=600)
+            angle = math.atan2(mouse_pos[1] - self.pos[1], mouse_pos[0] - self.pos[0])
+            rand = random.uniform(-math.pi/8, math.pi/8)
+            # multiplied with 100 for numerical stability. Doesn't do anything else.
+            self.shoot([math.cos(angle+rand)*100, math.sin(angle+rand)*100], lifetime=600,
+                       explode_size=3)
+
