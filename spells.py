@@ -1,11 +1,11 @@
 import in_game, map_gen, main, game_classes, vars
-import math, itertools, pygame
+import math, itertools, pygame, random
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, pos, mouse_click_pos):
+    def __init__(self, pos, mouse_click_pos, lifetime, explode_size, color=(255, 255, 255)):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([in_game.block_size/2,in_game.block_size/2])
-        self.image.fill((255, 255, 255))
+        self.image.fill(color)
         self.rect = self.image.get_rect()
         self.pos = pos
         self.rect.x = self.pos[0] * in_game.block_size - in_game.camera_pos[0]
@@ -13,7 +13,8 @@ class Bullet(pygame.sprite.Sprite):
         self.starttick = pygame.time.get_ticks()
 
         self.damage = 10
-        self.lifetime = 30000
+        self.lifetime = lifetime
+        self.explode_size = explode_size
         self.speed = 0.5
 
         # how many blocks the bullet moves at a time
@@ -21,6 +22,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speed_x = self.speed*math.cos(self.angle)
         self.speed_y = self.speed*math.sin(self.angle)
 
+        self.particle_type = "fire"
 
     def update(self, screen):
         self.pos[0] += self.speed_x
@@ -47,7 +49,7 @@ class Bullet(pygame.sprite.Sprite):
         try:
             if in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_x)] != 0:
                 #in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] = 0
-                self.explode(3)
+                self.explode(self.explode_size)
 
                 in_game.draw_map_surface(in_game.block_size)
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
@@ -59,3 +61,20 @@ class Bullet(pygame.sprite.Sprite):
     def delete(self):
         if pygame.time.get_ticks() - self.starttick >= self.lifetime:
             in_game.bulletGroup.remove(self)
+
+class Fireparticle(Bullet):
+    def __init__(self, pos, mouse_click_pos, lifetime, explode_size, color=(255, 10, 10)):
+        Bullet.__init__(self, pos, mouse_click_pos, lifetime, explode_size, color)
+
+    def update(self, screen):
+        Bullet.update(self, screen)
+        self.change_color()
+
+    def change_color(self):
+        time = pygame.time.get_ticks() - self.starttick
+        _life_time = time / self.lifetime
+        # prevent time imprecision errors
+        if not _life_time * 255 < 255: _life_time = 1
+        # make color change magic happen.
+        rand = random.randint(1, 50)
+        self.image.fill((255, int(255 - (_life_time * (255 - rand))), 50 - rand))

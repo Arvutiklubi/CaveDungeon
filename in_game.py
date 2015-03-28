@@ -5,6 +5,11 @@ block_size = 16
 
 mm_block_size, mm_surface_size = 2, 150
 
+def get_vars():
+    global mouse_pos, mouse_index
+    mouse_pos = pygame.mouse.get_pos()
+    mouse_index = [(mouse_pos[0]-camera_pos[0])//block_size, (mouse_pos[1]-camera_pos[1])//block_size]
+
 def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
@@ -141,6 +146,10 @@ def on_event(event):
     global player1, mouse_click_pos, map_surface_dict
     global map1
 
+    if event.type == pygame.MOUSEMOTION and player1.flamethrower:
+        mouse_click_pos = [(event.pos[0]-camera_pos[0])//block_size, (event.pos[1]-camera_pos[1])//block_size]
+        #print('a')
+
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_UP:
             player1.speed_y = -1
@@ -168,7 +177,6 @@ def on_event(event):
             player1.speed_x = 0
 
     elif event.type == pygame.MOUSEBUTTONDOWN:
-        mouse_pos = pygame.mouse.get_pos()
         mouse_click_pos = [(mouse_pos[0]-camera_pos[0])//block_size, (mouse_pos[1]-camera_pos[1])//block_size]
         if event.button == 1:
             player1.mine_block(mouse_click_pos)
@@ -176,6 +184,14 @@ def on_event(event):
             #bullet = game_classes.Bullet(player1.pos, mouse_click_pos)
             #bulletGroup.add(bullet)
             player1.shoot(mouse_click_pos)
+        elif event.button == 2:
+            #player1.flip()
+            player1.flamethrower = True
+
+    elif event.type == pygame.MOUSEBUTTONUP:
+        if event.button == 2:
+            #player1.flip()
+            player1.flamethrower = False
 
 def draw(screen, ms):
     global camera_pos, World_map
@@ -192,7 +208,8 @@ def draw(screen, ms):
     # joonistab minimap'i indikaatori
     screen.fill((255, 0, 0), (main.screen_width - mm_surface_size//2 - 1, main.screen_height - mm_surface_size//2, mm_surface_size//50, mm_surface_size//50))
 
-    player1.update(screen)
+    player1.update(screen, mouse_index)
+
     enemyGroup.update(screen)
     enemyGroup.draw(screen)
     bulletGroup.update(screen)

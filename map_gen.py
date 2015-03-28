@@ -35,10 +35,6 @@ class Whole_map(object):
 
             in_game.draw_map_surface(in_game.block_size)
 
-
-
-
-
 class Map(object):
     # Generates map with height and width
     #	 0 representing walkable area, 1 stone wall,
@@ -85,7 +81,6 @@ class Map(object):
               print(item[0], ' '.join(map(str, item[1:])))
          print('\n')
          return
-
 
     def map_iter(self, iter_rule):
         # single step of iteration to iterate through the map
@@ -158,8 +153,6 @@ class Map(object):
         else:
             return 0
 
-
-
     def generate_minerals(self, probability, probability2, grid_sz, id):
         # Iterates through all the tiles and if it is stone wall, makes it mineral "id" with some probability.
         # Probability2 denotes the amount of cells not empty around. a
@@ -205,8 +198,6 @@ class Map(object):
         for lair in self.monster_lairs:
             Monsterlair.merge_with_map(lair, self.map)
 
-
-
 class Monsterlair(Map):
     def __init__(self, x, y, width, height):
         Map.__init__(self, width, height)
@@ -214,22 +205,6 @@ class Monsterlair(Map):
         self.gen_circle(0, 0, self.width)
         self.x, self.y = x, y
         self.monsters = []
-
-    def generate_minerals(self, probability, probability2, grid_sz, id):
-        # Iterates through all the tiles and if it is stone wall, makes it mineral "id" with some probability.
-        # Probability2 denotes the amount of cells not empty around. a
-        for y in range(self.height):
-            for x in range(self.width):
-                # gives the probability that mineral spawns at possible spawn locations
-                if self.map[y][x] and probability >= random.random():
-                    # defines the possible spawn locations regarding what is around the spawn location.
-                    # if the tile has so and so many stone tiles around it.
-                    # making possible to make some minerals spawn deep within walls
-                    # and some near cave walls.
-                    if self.count_blocks(x, y, grid_sz) >= probability2:
-                        self.map[y][x] = id
-        #self.print_map()
-        return
 
     def merge_with_map(self, map):
         map1.generate_minerals(probability=1, id=3, probability2=3**2-1, grid_sz=3)
@@ -240,7 +215,6 @@ class Monsterlair(Map):
                 map[self.y + dy][self.x + dx] = 0
 
         return map
-
 
 def generate_map(map_size):
     global map1

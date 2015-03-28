@@ -1,4 +1,4 @@
-import pygame, random, math, itertools, sys
+import pygame, random, math, itertools, copy
 import in_game, main, map_gen, spells, vars
 
 # Omadused, mida k6ik characterid peaksid omama
@@ -8,7 +8,6 @@ def block_delete(pos_y, pos_x):
         if in_game.map_list[pos_y][pos_x] == ID:
             in_game.World_map.map_dict[(0, 0)].dropped_items.update({(pos_y, pos_x): vars.item_ID[ID]})
     in_game.map_list[pos_y][pos_x] = 0
-
 
 class Character:
     def __init__(self, pos, health=100, max_health=100):
@@ -22,13 +21,13 @@ class Character:
     def collision_detect(self):
         self.dir = ""
         if self.pos[0]+self.speed_x >= 0 and self.pos[1]+self.speed_y >= 0 and self.pos[0]+self.speed_x < in_game.map_size and self.pos[1]+self.speed_y < in_game.map_size:
-            if in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] != 0 and in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] != 0:
+            if in_game.map_list[int(self.pos[1]+self.speed_y)][int(self.pos[0])] != 0 and in_game.map_list[int(self.pos[1])][int(self.pos[0]+self.speed_x)] != 0:
                 return False
-            elif in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]+self.speed_x] == 0:
+            elif in_game.map_list[int(self.pos[1]+self.speed_y)][int(self.pos[0]+self.speed_x)] == 0:
                 return True
-            elif in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] != 0 and in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] == 0:
+            elif in_game.map_list[int(self.pos[1])][int(self.pos[0]+self.speed_x)] != 0 and in_game.map_list[int(self.pos[1]+self.speed_y)][int(self.pos[0])] == 0:
                 self.dir = "y"
-            elif in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] != 0 and in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] == 0:
+            elif in_game.map_list[int(self.pos[1]+self.speed_y)][int(self.pos[0])] != 0 and in_game.map_list[int(self.pos[1])][int(self.pos[0]+self.speed_x)] == 0:
                 self.dir = "x"
             else:
                 return False
@@ -63,10 +62,22 @@ class Character:
         for item, count in self.inventory.items():
             print(item, "x",count)
 
+    """def find_vertices(self):
+        for i in range(len(map_list)):
+            for j in map_list[i]:
+                if in_game.map_list[i][j] != 0:
+                    a = 0
+                    vert = []
+                    for dx, dy in itertools.product(range(-1, 2), repeat=2):
+                        if in_game.map_list[i + dy][j + dx] != 0:
+                            a += 1
+                    if a >= 2:
+                        vert.append(math.sqrt((i - self.pos[1])**2 + (j - self.pos[0])**2))"""
 
+    #def field_of_vision(self):
 
-# Omadused, mis on iseloomulikud vastastele
 class Enemy(Character, pygame.sprite.Sprite):
+    # Omadused, mis on iseloomulikud vastastele
     def __init__(self, pos=None):
         pygame.sprite.Sprite.__init__(self)
         # if no position is given generate randomly, else generate with the position given
@@ -86,8 +97,8 @@ class Enemy(Character, pygame.sprite.Sprite):
         self.rect.x = self.pos[0] * in_game.block_size + in_game.camera_pos[0]
         self.rect.y = self.pos[1] * in_game.block_size + in_game.camera_pos[1]
 
-# Omadused, mis on iseloomulikud playerile
 class player(Character):
+    # Omadused, mis on iseloomulikud playerile
     def __init__(self, pos):
         # players position is the position of the block that the player legs are on
         Character.__init__(self, self.rand_create_character())
@@ -95,14 +106,15 @@ class player(Character):
         self.pos_onscreen = [main.screen_width//2 - self.size[0]/2, main.screen_height//2 - self.size[1]/2]
         self.color = [255, 10, 10]
 
-        self.is_shooting = False
+        self.flamethrower = False
         self.block_mine_range = 20
 
-    def update(self, screen):
+    def update(self, screen, mouse_pos):
         # esimene: kolmnurga alus; teine: vasak haar; kolmas: parem haar
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0], self.pos_onscreen[1]+self.size[1]), 3)
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0]/2, self.pos_onscreen[1]), 2)
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0]+self.size[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0]/2, self.pos_onscreen[1]), 2)
+        self.ft(mouse_pos)
 
         if self.collision_detect():
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]+self.speed_y]
@@ -112,7 +124,6 @@ class player(Character):
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]]
 
         self.pick_loot()
-
 
     def mine_block(self, mouse_click_pos):
         try:
@@ -125,9 +136,20 @@ class player(Character):
         in_game.draw_map_surface(in_game.block_size)
         in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
-
-
-    def shoot(self, mouse_click_pos):
-        global bulletGroup
-        bullet = spells.Bullet(self.pos, mouse_click_pos)
+    def shoot(self, mouse_click_pos, lifetime=30000, explode_size=3, color=(255, 255, 255)):
+        #global bulletGroup
+        bullet = spells.Fireparticle(self.pos, mouse_click_pos, lifetime, explode_size, color=color)
         in_game.bulletGroup.add(bullet)
+
+    """def flip(self):
+        if not self.flamethrower:
+            self.flamethrower = True
+        else:
+            self.flamethrower = False"""
+
+    def ft(self, mouse_pos):
+        if self.flamethrower:
+            angle = math.atan2(mouse_pos[1] - self.pos[1], mouse_pos[0] - self.pos[0])
+            rand = random.uniform(-math.pi/8, math.pi/8)
+            # multiplied with 100 for numerical stability. Doesn't do anything else.
+            self.shoot([math.cos(angle+rand)*100000, math.sin(angle+rand)*100000], lifetime=600, explode_size=3)

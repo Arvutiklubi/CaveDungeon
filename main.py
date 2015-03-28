@@ -1,7 +1,7 @@
 import pygame, sys, in_game, vars
 
 # Ehk oleks ilus teha tekstifail selliste globaalsete muutujate jaoks?
-screen_width, screen_height = 800, 600
+screen_width, screen_height = 1080, 720
 
 def quit_funct():
     pygame.quit()
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     pygame.display.set_caption('CaveDungeon v0.002')
 
     clock = pygame.time.Clock()
-    ms = clock.tick(40)
+    ms = clock.tick(90)
 
     state = in_game
 
@@ -28,9 +28,10 @@ if __name__ == '__main__':
 
             else:
                 # funktsioon mis k2sitleb nupuvajutusi in_game.py moodulis
+                state.get_vars()
                 state.on_event(event)
 
-        ms = clock.tick(40)
+        ms = clock.tick(90)
 
         screen.fill((80, 80, 80))
 
