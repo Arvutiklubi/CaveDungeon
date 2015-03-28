@@ -1,4 +1,5 @@
 import pygame, map_gen, game_classes, main, vars
+from math import trunc
 
 map_size = 100
 block_size = 16
@@ -83,10 +84,50 @@ def draw_map_surface(block_size):
         row = 0
         column = 0
 
-    for item in World_map.map_dict[(0, 0)].dropped_items:
-        map_surface_dict[(0, 0)].fill(colors[4], (block_size*item[1], block_size*item[0], block_size, block_size))
-
     join_maps()
+
+def update_map():
+    global Whole_map, whole_map_surface, map_update_queue
+    #võtab listist kordinaadid ja blocki id ning muudab need map_surface'ilt ja map_listist
+
+    if len(map_update_queue) != 0:
+        colors = {
+             0 : ( 10,  10,  10),
+             1 : ( 70,  70,  70),
+             2 : ( 80,  80,  80),
+             3 : ( 45,   0,   0),
+             4 : (100,   0, 100),
+            11 : (100, 100,  10),
+            12 : ( 10, 100, 100),
+            13 : (  0,  45,   0),
+        }
+
+        for i in range(len(map_update_queue)):
+            map_chunk = []
+
+            cord_y = map_update_queue[i][0] / 100
+            if cord_y < 0:
+                cord_y -= 1
+            map_chunk.append(trunc(cord_y))
+
+            cord_x = map_update_queue[i][1] / 100
+            if cord_x < 0:
+                cord_x -= 1
+            map_chunk.append(trunc(cord_x))
+
+            #print(tuple(map_chunk), map_update_queue[i][0], map_update_queue[i][1], map_update_queue[i][2])
+            try:
+                World_map.map_dict[tuple(map_chunk)].map[map_update_queue[i][0]][map_update_queue[i][1]] = map_update_queue[i][2]
+
+                whole_map_surface.fill(colors[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size, block_size, block_size))
+
+            except:
+                pass
+
+            for i in World_map.map_dict[tuple(map_chunk)].dropped_items:
+                    whole_map_surface.fill(colors[4], (i[1]*block_size, i[0]*block_size, block_size, block_size))
+
+        map_update_queue = []
 
 def join_maps():
     global World_map, map_surface_dict, whole_map_surface, greatest_negative_x, greatest_positive_y, greatest_positive_x, greatest_negative_y
@@ -118,7 +159,7 @@ def join_maps():
         whole_map_surface.blit(map_surface_dict[i], ((abs(greatest_negative_x) + i[0]) * map_size * block_size, (greatest_positive_y - i[1]) * map_size * block_size))
 
 def init():
-    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup
+    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup, map_update_queue
     # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
 
     # genereerib kaardi
@@ -142,13 +183,15 @@ def init():
     # pygame'i standartne font
     std_font = pygame.font.Font(None, 16)
 
+    #list kuhu lähevad kaardi muudatused, vorm = [y, x, block_ID]
+    map_update_queue = []
+
 def on_event(event):
     global player1, mouse_click_pos, map_surface_dict
     global map1
 
     if event.type == pygame.MOUSEMOTION and player1.flamethrower:
         mouse_click_pos = [(event.pos[0]-camera_pos[0])//block_size, (event.pos[1]-camera_pos[1])//block_size]
-        #print('a')
 
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_UP:
@@ -201,7 +244,13 @@ def draw(screen, ms):
     # x-suund : pool ekraanist + pool ruudu suurusest - mängja asukoht + 1 * ruudu suurus
     # y-suund : pool ekraanist - mängja asukoht * ruudu suurus
     # imelikud liitmised ja lahutamised on imeliku, sest.
+
     camera_pos = [main.screen_width//2 + block_size//2 - (player1.pos[0]+1) * block_size, main.screen_height//2 - (player1.pos[1]) * block_size]
+
+    round(camera_pos[0], -1)
+    round(camera_pos[1], -1)
+
+    update_map()
 
     screen.blit(whole_map_surface, (camera_pos[0]-abs(greatest_negative_x)*map_size*block_size, camera_pos[1]-greatest_positive_y*map_size*block_size))
 

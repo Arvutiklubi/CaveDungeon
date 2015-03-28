@@ -6,8 +6,10 @@ import in_game, main, map_gen, spells, vars
 def block_delete(pos_y, pos_x):
     for ID in vars.item_ID.keys():
         if in_game.map_list[pos_y][pos_x] == ID:
+            in_game.map_update_queue.append([pos_y, pos_x, 4])
+
             in_game.World_map.map_dict[(0, 0)].dropped_items.update({(pos_y, pos_x): vars.item_ID[ID]})
-    in_game.map_list[pos_y][pos_x] = 0
+    in_game.map_update_queue.append([pos_y, pos_x, 0])
 
 class Character:
     def __init__(self, pos, health=100, max_health=100):
