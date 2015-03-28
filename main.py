@@ -1,7 +1,7 @@
 import pygame, sys, in_game, vars
 
 # Ehk oleks ilus teha tekstifail selliste globaalsete muutujate jaoks?
-screen_width, screen_height = 800, 600
+screen_width, screen_height = 1200, 800 
 
 def quit_funct():
     pygame.quit()
@@ -28,6 +28,7 @@ if __name__ == '__main__':
 
             else:
                 # funktsioon mis k2sitleb nupuvajutusi in_game.py moodulis
+                state.get_vars()
                 state.on_event(event)
 
         ms = clock.tick(40)

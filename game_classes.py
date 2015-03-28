@@ -22,13 +22,13 @@ class Character:
     def collision_detect(self):
         self.dir = ""
         if self.pos[0]+self.speed_x >= 0 and self.pos[1]+self.speed_y >= 0 and self.pos[0]+self.speed_x < in_game.map_size and self.pos[1]+self.speed_y < in_game.map_size:
-            if in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] != 0 and in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] != 0:
+            if in_game.map_list[int(self.pos[1]+self.speed_y)][int(self.pos[0])] != 0 and in_game.map_list[int(self.pos[1])][int(self.pos[0]+self.speed_x)] != 0:
                 return False
-            elif in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]+self.speed_x] == 0:
+            elif in_game.map_list[int(self.pos[1]+self.speed_y)][int(self.pos[0]+self.speed_x)] == 0:
                 return True
-            elif in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] != 0 and in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] == 0:
+            elif in_game.map_list[int(self.pos[1])][int(self.pos[0]+self.speed_x)] != 0 and in_game.map_list[int(self.pos[1]+self.speed_y)][int(self.pos[0])] == 0:
                 self.dir = "y"
-            elif in_game.map_list[self.pos[1]+self.speed_y][self.pos[0]] != 0 and in_game.map_list[self.pos[1]][self.pos[0]+self.speed_x] == 0:
+            elif in_game.map_list[int(self.pos[1]+self.speed_y)][int(self.pos[0])] != 0 and in_game.map_list[int(self.pos[1])][int(self.pos[0]+self.speed_x)] == 0:
                 self.dir = "x"
             else:
                 return False
@@ -118,12 +118,12 @@ class player(Character):
         self.flamethrower = False
         self.block_mine_range = 20
 
-    def update(self, screen):
+    def update(self, screen, mouse_pos):
         # esimene: kolmnurga alus; teine: vasak haar; kolmas: parem haar
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0], self.pos_onscreen[1]+self.size[1]), 3)
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0]/2, self.pos_onscreen[1]), 2)
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0]+self.size[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0]/2, self.pos_onscreen[1]), 2)
-        self.ft()
+        self.ft(mouse_pos)
 
         if self.collision_detect():
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]+self.speed_y]
@@ -157,7 +157,7 @@ class player(Character):
         else:
             self.flamethrower = False"""
 
-    def ft(self):
+    def ft(self, mouse_pos):
         if self.flamethrower:
             rand = random.randint(-5, 5)
-            self.shoot([in_game.mouse_click_pos[0]+rand, in_game.mouse_click_pos[1]+rand], 600)
+            self.shoot([mouse_pos[0]+rand, mouse_pos[1]+rand], lifetime=600)

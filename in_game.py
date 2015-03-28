@@ -5,6 +5,11 @@ block_size = 16
 
 mm_block_size, mm_surface_size = 2, 150
 
+def get_vars():
+    global mouse_pos, mouse_index
+    mouse_pos = pygame.mouse.get_pos()
+    mouse_index = [(mouse_pos[0]-camera_pos[0])//block_size, (mouse_pos[1]-camera_pos[1])//block_size]
+
 def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
@@ -132,7 +137,6 @@ def on_event(event):
             player1.speed_x = 0
 
     elif event.type == pygame.MOUSEBUTTONDOWN:
-        mouse_pos = pygame.mouse.get_pos()
         mouse_click_pos = [(mouse_pos[0]-camera_pos[0])//block_size, (mouse_pos[1]-camera_pos[1])//block_size]
         if event.button == 1:
             player1.mine_block(mouse_click_pos)
@@ -166,7 +170,7 @@ def draw(screen, ms):
     screen.fill((255, 0, 0), (main.screen_width - mm_surface_size//2 - 1, main.screen_height - mm_surface_size//2, mm_surface_size//50, mm_surface_size//50))
 
 
-    player1.update(screen)
+    player1.update(screen, mouse_index)
     enemyGroup.update(screen)
     enemyGroup.draw(screen)
     bulletGroup.update(screen)
