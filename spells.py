@@ -2,7 +2,7 @@ import in_game, map_gen, main, game_classes, vars
 import math, itertools, pygame
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, pos, mouse_click_pos):
+    def __init__(self, pos, mouse_click_pos, lifetime, explode_size):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([in_game.block_size/2,in_game.block_size/2])
         self.image.fill((255, 255, 255))
@@ -13,7 +13,8 @@ class Bullet(pygame.sprite.Sprite):
         self.starttick = pygame.time.get_ticks()
 
         self.damage = 10
-        self.lifetime = 30000
+        self.lifetime = lifetime
+        self.explode_size = explode_size
         self.speed = 0.5
 
         # how many blocks the bullet moves at a time
@@ -47,7 +48,7 @@ class Bullet(pygame.sprite.Sprite):
         try:
             if in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_x)] != 0:
                 #in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] = 0
-                self.explode(3)
+                self.explode(self.explode_size)
 
                 in_game.draw_map_surface(in_game.block_size)
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)

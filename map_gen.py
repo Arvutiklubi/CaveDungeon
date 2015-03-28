@@ -213,22 +213,6 @@ class Monsterlair(Map):
         self.x, self.y = x, y
         self.monsters = []
 
-    def generate_minerals(self, probability, probability2, grid_sz, id):
-        # Iterates through all the tiles and if it is stone wall, makes it mineral "id" with some probability.
-        # Probability2 denotes the amount of cells not empty around. a
-        for y in range(self.height):
-            for x in range(self.width):
-                # gives the probability that mineral spawns at possible spawn locations
-                if self.map[y][x] and probability >= random.random():
-                    # defines the possible spawn locations regarding what is around the spawn location.
-                    # if the tile has so and so many stone tiles around it.
-                    # making possible to make some minerals spawn deep within walls
-                    # and some near cave walls.
-                    if self.count_blocks(x, y, grid_sz) >= probability2:
-                        self.map[y][x] = id
-        #self.print_map()
-        return
-
     def merge_with_map(self, map):
         map1.generate_minerals(probability=1, id=3, probability2=3**2-1, grid_sz=3)
         for dx, dy in itertools.product(range(self.width), range(self.height)):

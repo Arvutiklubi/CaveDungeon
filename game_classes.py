@@ -1,4 +1,4 @@
-import pygame, random, math, itertools, sys
+import pygame, random, math, itertools, copy
 import in_game, main, map_gen, spells, vars
 
 # Omadused, mida k6ik characterid peaksid omama
@@ -64,6 +64,26 @@ class Character:
             print(item, "x",count)
 
 
+    """def find_vertices(self):
+        for i in range(len(map_list)):
+            for j in map_list[i]:
+                if in_game.map_list[i][j] != 0:
+                    a = 0
+                    vert = []
+                    for dx, dy in itertools.product(range(-1, 2), repeat=2):
+                        if in_game.map_list[i + dy][j + dx] != 0:
+                            a += 1
+                    if a >= 2:
+                        vert.append(math.sqrt((i - self.pos[1])**2 + (j - self.pos[0])**2))"""
+
+    #def field_of_vision(self):
+
+
+
+
+
+
+
 
 # Omadused, mis on iseloomulikud vastastele
 class Enemy(Character, pygame.sprite.Sprite):
@@ -95,7 +115,7 @@ class player(Character):
         self.pos_onscreen = [main.screen_width//2 - self.size[0]/2, main.screen_height//2 - self.size[1]/2]
         self.color = [255, 10, 10]
 
-        self.is_shooting = False
+        self.flamethrower = False
         self.block_mine_range = 20
 
     def update(self, screen):
@@ -103,6 +123,7 @@ class player(Character):
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0], self.pos_onscreen[1]+self.size[1]), 3)
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0]/2, self.pos_onscreen[1]), 2)
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0]+self.size[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0]/2, self.pos_onscreen[1]), 2)
+        self.ft()
 
         if self.collision_detect():
             self.pos = [self.pos[0]+self.speed_x, self.pos[1]+self.speed_y]
@@ -125,9 +146,18 @@ class player(Character):
         in_game.draw_map_surface(in_game.block_size)
         in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
-
-
-    def shoot(self, mouse_click_pos):
-        global bulletGroup
-        bullet = spells.Bullet(self.pos, mouse_click_pos)
+    def shoot(self, mouse_click_pos, lifetime=30000, explode_size=3):
+        #global bulletGroup
+        bullet = spells.Bullet(self.pos, mouse_click_pos, lifetime, explode_size)
         in_game.bulletGroup.add(bullet)
+
+    """def flip(self):
+        if not self.flamethrower:
+            self.flamethrower = True
+        else:
+            self.flamethrower = False"""
+
+    def ft(self):
+        if self.flamethrower:
+            rand = random.randint(-5, 5)
+            self.shoot([in_game.mouse_click_pos[0]+rand, in_game.mouse_click_pos[1]+rand], 600)

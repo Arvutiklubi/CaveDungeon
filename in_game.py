@@ -140,6 +140,14 @@ def on_event(event):
             #bullet = game_classes.Bullet(player1.pos, mouse_click_pos)
             #bulletGroup.add(bullet)
             player1.shoot(mouse_click_pos)
+        elif event.button == 2:
+            #player1.flip()
+            player1.flamethrower = True
+
+    elif event.type == pygame.MOUSEBUTTONUP:
+        if event.button == 2:
+            #player1.flip()
+            player1.flamethrower = False
 
 def draw(screen, ms):
     global camera_pos, World_map
