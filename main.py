@@ -1,13 +1,10 @@
-import pygame, sys, in_game, vars
+import pygame, sys, in_game, vars, map_gen
+import multiprocessing
 
 # Ehk oleks ilus teha tekstifail selliste globaalsete muutujate jaoks?
 screen_width, screen_height = 1080, 720
 
-def quit_funct():
-    pygame.quit()
-    sys.exit()
-
-if __name__ == '__main__':
+def main():
     # setting up
     pygame.init()
 
@@ -38,3 +35,11 @@ if __name__ == '__main__':
         # funktsioon joonistab ekraani in_game.py moodulis
         state.draw(screen, ms)
         pygame.display.flip()
+
+def quit_funct():
+    pygame.quit()
+    sys.exit()
+
+if __name__ == '__main__':
+    main_thread = multiprocessing.Process(target=main)
+    main_thread.start()
