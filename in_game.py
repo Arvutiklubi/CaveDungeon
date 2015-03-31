@@ -84,14 +84,12 @@ def draw_map_surface(block_size):
         row = 0
         column = 0
 
-    join_maps()
+    update_map()
 
 def update_map():
-    global Whole_map, whole_map_surface, map_update_queue
+    global Whole_map, map_surface_dict, map_update_queue
     #võtab listist kordinaadid ja blocki id ning muudab need map_surface'ilt ja map_listist
-
-    if len(map_update_queue) != 0:
-        colors = {
+    colors = {
              0 : ( 10,  10,  10),
              1 : ( 70,  70,  70),
              2 : ( 80,  80,  80),
@@ -102,6 +100,7 @@ def update_map():
             13 : (  0,  45,   0),
         }
 
+    if len(map_update_queue) != 0:
         for i in range(len(map_update_queue)):
             map_chunk = []
 
@@ -119,15 +118,19 @@ def update_map():
             try:
                 World_map.map_dict[tuple(map_chunk)].map[map_update_queue[i][0]][map_update_queue[i][1]] = map_update_queue[i][2]
 
-                whole_map_surface.fill(colors[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size, block_size, block_size))
+                map_surface_dict[tuple(map_chunk)].fill(colors[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size, block_size, block_size))
 
             except:
                 pass
 
-            for i in World_map.map_dict[tuple(map_chunk)].dropped_items:
-                    whole_map_surface.fill(colors[4], (i[1]*block_size, i[0]*block_size, block_size, block_size))
+    for j in World_map.map_dict:
+        for i in World_map.map_dict[tuple(j)].dropped_items:
 
-        map_update_queue = []
+            map_surface_dict[j].fill(colors[4], (i[1]*block_size, i[0]*block_size, block_size, block_size))
+
+    map_update_queue = []
+
+    join_maps()
 
 def join_maps():
     global World_map, map_surface_dict, whole_map_surface, greatest_negative_x, greatest_positive_y, greatest_positive_x, greatest_negative_y
@@ -159,7 +162,7 @@ def join_maps():
         whole_map_surface.blit(map_surface_dict[i], ((abs(greatest_negative_x) + i[0]) * map_size * block_size, (greatest_positive_y - i[1]) * map_size * block_size))
 
 def init():
-    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup, map_update_queue
+    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup, map_update_queue, whole_map_surface
     # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
 
     # genereerib kaardi
@@ -168,6 +171,9 @@ def init():
     # list mis sisaldab kaarti. y koord on esimene index, x koord on teine index
     # esialgne map_list on world_mapi (0, 0) element. See juhtub olema Map objekt. Map objektist tahame map listi.
     map_list = World_map.map_dict[(0, 0)].map
+
+    #list kuhu lähevad kaardi muudatused, vorm = [y, x, block_ID]
+    map_update_queue = []
 
     camera_pos = [0, 0]
     player1 = game_classes.player([10, 10])
@@ -182,9 +188,6 @@ def init():
 
     # pygame'i standartne font
     std_font = pygame.font.Font(None, 16)
-
-    #list kuhu lähevad kaardi muudatused, vorm = [y, x, block_ID]
-    map_update_queue = []
 
 def on_event(event):
     global player1, mouse_click_pos, map_surface_dict
