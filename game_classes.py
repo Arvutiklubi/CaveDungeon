@@ -39,7 +39,7 @@ class Character:
     def rand_create_character(self):
         thatWillDo = False
         while not thatWillDo:
-            pos = [random.randint(30, in_game.map_size-30), random.randint(30, in_game.map_size-30)]
+            pos = [random.randint(10, in_game.map_size-10), random.randint(10, in_game.map_size-10)]
             if in_game.map_list[pos[1]][pos[0]] == 0:
                 thatWillDo = True
         return pos
@@ -154,4 +154,4 @@ class player(Character):
             angle = math.atan2(mouse_pos[1] - self.pos[1], mouse_pos[0] - self.pos[0])
             rand = random.uniform(-math.pi/8, math.pi/8)
             # multiplied with 100 for numerical stability. Doesn't do anything else.
-            self.shoot([math.cos(angle+rand)*100000, math.sin(angle+rand)*100000], lifetime=600, explode_size=3)
+            self.shoot([math.cos(angle+rand)*100000, math.sin(angle+rand)*100000], lifetime=600+random.randint(-50, 50), explode_size=3)

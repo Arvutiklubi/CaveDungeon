@@ -222,8 +222,8 @@ def generate_map(map_size):
     map1 = Map(map_size, map_size)
     # iterates map according to the iteration rule defined. Allows for different iteration schemes
     # making it possible to develop more complex maps and regions with different characteristics
-    for i in range(7): map1.map_iter(map1.iter_rule2)
-    map1.add_monster_lair(0, 0, 50)
+    for i in range(4): map1.map_iter(map1.iter_rule)
+    #map1.add_monster_lair(0, 0, 50)
     # Generating monster lairs
     # Generate at most 5 lairs
     for i in range(random.randint(0, 5)):

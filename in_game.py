@@ -1,7 +1,7 @@
 import pygame, map_gen, game_classes, main, vars
 from math import trunc
 
-map_size = 100
+map_size = 75
 block_size = 16
 
 mm_block_size, mm_surface_size = 2, 150
@@ -257,9 +257,6 @@ def draw(screen, ms):
 
     screen.blit(whole_map_surface, (camera_pos[0]-abs(greatest_negative_x)*map_size*block_size, camera_pos[1]-greatest_positive_y*map_size*block_size))
 
-    # joonistab minimap'i indikaatori
-    screen.fill((255, 0, 0), (main.screen_width - mm_surface_size//2 - 1, main.screen_height - mm_surface_size//2, mm_surface_size//50, mm_surface_size//50))
-
     player1.update(screen, mouse_index)
 
     enemyGroup.update(screen)
@@ -269,6 +266,9 @@ def draw(screen, ms):
 
     # uuendame minimapi iga kaader
     screen.blit(minimap_update(mm_block_size, mm_surface_size, player1.pos), (main.screen_width - mm_surface_size, main.screen_height - mm_surface_size))
+
+    # joonistab minimap'i indikaatori
+    screen.fill((255, 0, 0), (main.screen_width - mm_surface_size//2 - 1, main.screen_height - mm_surface_size//2, mm_surface_size//50, mm_surface_size//50))
 
     # Kui lähed 10 sammu kaugusele mapi äärest genereeri sinna äärde uus map
     if map_gen.get_map_gen_direction(player1.pos, 10, map_size) != (0, 0):
