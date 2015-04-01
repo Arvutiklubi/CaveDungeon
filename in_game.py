@@ -272,7 +272,15 @@ def draw(screen, ms):
 
     # Kui lähed 10 sammu kaugusele mapi äärest genereeri sinna äärde uus map
     if map_gen.get_map_gen_direction(player1.pos, 10, map_size) != (0, 0):
-        World_map.add_map((0, 0), map_gen.get_map_gen_direction(player1.pos, 10, map_size), map_size)
+        current_map = (0, 0)
+        map_gen_dir = map_gen.get_map_gen_direction(player1.pos, 10, map_size)
+        World_map.add_map((0, 0), map_gen_dir, map_size)
+        x, y = map_gen_dir
+        # Kui liigume diagonaalis, magic
+        if abs(x) + abs(y) == 2:
+            World_map.add_map(current_map, (x, 0), map_size)
+            World_map.add_map(current_map, (0, y), map_size)
+
 
 
     fps_counter(screen, ms)

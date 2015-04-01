@@ -12,7 +12,7 @@ def main():
     pygame.display.set_caption('CaveDungeon v0.002')
 
     clock = pygame.time.Clock()
-    ms = clock.tick(40)
+    ms = clock.tick(200)
 
     state = in_game
 
@@ -28,7 +28,7 @@ def main():
                 state.get_vars()
                 state.on_event(event)
 
-        ms = clock.tick(40)
+        ms = clock.tick(200)
 
         screen.fill((80, 80, 80))
 
