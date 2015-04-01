@@ -51,7 +51,6 @@ class Bullet(pygame.sprite.Sprite):
                 #in_game.map_list[round(self.pos[1] + self.speed_y)][round(self.pos[0] + self.speed_y)] = 0
                 self.explode(self.explode_size)
 
-                #in_game.draw_map_surface(in_game.block_size)
                 in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
 

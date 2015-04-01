@@ -34,6 +34,7 @@ class Whole_map(object):
             self.map_dict.update({new_map_idx: generate_map(map_size)})
 
             in_game.draw_map_surface(in_game.block_size)
+            in_game.join_maps()
 
 class Map(object):
     # Generates map with height and width

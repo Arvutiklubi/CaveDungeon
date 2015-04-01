@@ -84,10 +84,8 @@ def draw_map_surface(block_size):
         row = 0
         column = 0
 
-    update_map()
-
 def update_map():
-    global Whole_map, map_surface_dict, map_update_queue
+    global whole_map_surface , map_surface_dict, map_update_queue, World_map
     #võtab listist kordinaadid ja blocki id ning muudab need map_surface'ilt ja map_listist
     colors = {
              0 : ( 10,  10,  10),
@@ -99,6 +97,21 @@ def update_map():
             12 : ( 10, 100, 100),
             13 : (  0,  45,   0),
         }
+
+    greatest_positive_x1 = 0
+    greatest_negative_x1 = 0
+    greatest_positive_y1 = 0
+    greatest_negative_y1 = 0
+
+    for i in map_surface_dict:
+        if i[0] > greatest_positive_x1 and i[0] > 0:
+            greatest_positive_x1 = i[0]
+        if i[0] < greatest_negative_x1 and i[0] < 0:
+            greatest_negative_x1 = i[0]
+        if i[1] > greatest_positive_y1 and i[1] > 0:
+            greatest_positive_y1 = i[1]
+        if i[1] < greatest_negative_y1 and i[1] < 0:
+            greatest_negative_y1 = i[1]
 
     if len(map_update_queue) != 0:
         for i in range(len(map_update_queue)):
@@ -114,23 +127,20 @@ def update_map():
                 cord_x -= 1
             map_chunk.append(trunc(cord_x))
 
-            #print(tuple(map_chunk), map_update_queue[i][0], map_update_queue[i][1], map_update_queue[i][2])
-            try:
-                World_map.map_dict[tuple(map_chunk)].map[map_update_queue[i][0]][map_update_queue[i][1]] = map_update_queue[i][2]
+            World_map.map_dict[tuple(map_chunk)].map[map_update_queue[i][0]][map_update_queue[i][1]] = map_update_queue[i][2]
 
-                map_surface_dict[tuple(map_chunk)].fill(colors[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size, block_size, block_size))
+            map_surface_dict[tuple(map_chunk)].fill(colors[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size, block_size, block_size))
+            whole_map_surface.fill(colors[map_update_queue[i][2]], (((abs(greatest_negative_x1) + map_chunk[0])*map_size + map_update_queue[i][1])*block_size, ((greatest_positive_y1 - map_chunk[1])*map_size + map_update_queue[i][0])*block_size, block_size, block_size))
 
-            except:
-                pass
+            print(((abs(greatest_negative_x1) + map_chunk[0])*map_size + map_update_queue[i][1])*block_size, ((greatest_positive_y1 - map_chunk[1])*map_size + map_update_queue[i][0])*block_size)
 
     for j in World_map.map_dict:
         for i in World_map.map_dict[tuple(j)].dropped_items:
 
             map_surface_dict[j].fill(colors[4], (i[1]*block_size, i[0]*block_size, block_size, block_size))
+            whole_map_surface.fill(colors[4], (((abs(greatest_negative_x1) + j[0])*map_size + i[1])*block_size, ((greatest_positive_y1 - j[1])*map_size + i[0])*block_size, block_size, block_size))
 
     map_update_queue = []
-
-    join_maps()
 
 def join_maps():
     global World_map, map_surface_dict, whole_map_surface, greatest_negative_x, greatest_positive_y, greatest_positive_x, greatest_negative_y
@@ -184,6 +194,7 @@ def init():
 
     # pind kuhu on joonistatud kaart
     draw_map_surface(block_size)
+    join_maps()
     draw_minimap(mm_block_size, mm_surface_size)
 
     # pygame'i standartne font
