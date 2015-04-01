@@ -55,8 +55,9 @@ class Character:
                         self.inventory.update({in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]: 1})
                     del in_game.World_map.map_dict[(0, 0)].dropped_items[item_pos]
 
-
                     in_game.draw_map_surface(in_game.block_size)
+                    in_game.update_map()
+                    in_game.join_maps()
                     in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
 
     def display_inventory(self):
