@@ -15,6 +15,7 @@ def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
     screen.blit(fps_surface, (0, 0))
+    print(str(1//(ms/1000)))
 
 def draw_minimap(block_size, surface_size):
     global minimap_surface
@@ -131,9 +132,6 @@ def update_map():
 
             map_surface_dict[tuple(map_chunk)].fill(colors[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size, block_size, block_size))
             whole_map_surface.fill(colors[map_update_queue[i][2]], (((abs(greatest_negative_x1) + map_chunk[0])*map_size + map_update_queue[i][1])*block_size, ((greatest_positive_y1 - map_chunk[1])*map_size + map_update_queue[i][0])*block_size, block_size, block_size))
-
-            print(((abs(greatest_negative_x1) + map_chunk[0])*map_size + map_update_queue[i][1])*block_size, ((greatest_positive_y1 - map_chunk[1])*map_size + map_update_queue[i][0])*block_size)
-
     for j in World_map.map_dict:
         for i in World_map.map_dict[tuple(j)].dropped_items:
 
