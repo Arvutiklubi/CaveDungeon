@@ -19,6 +19,7 @@ class Character:
         self.health = health
         self.max_health = max_health
         self.inventory = {}
+        self.buffs = []
 
     def collision_detect(self):
         self.dir = ""
@@ -59,6 +60,15 @@ class Character:
                     in_game.update_map()
                     in_game.join_maps()
                     in_game.draw_minimap(in_game.mm_block_size, in_game.mm_surface_size)
+
+    def add_buffs(self, buff):
+        # adds a buff to character buffs list
+        self.buffs.append(buff)
+
+    def rm_buff(self, buff):
+        # removes first instance of selected buff from character buff list.
+        # WARNING! Might ruin stackable buffs, research index() for more info.
+        self.buffs.pop(self.buffs.index(buff))
 
     def display_inventory(self):
         print('=======================')
@@ -144,11 +154,6 @@ class player(Character):
         bullet = spells.Fireparticle(self.pos, mouse_click_pos, lifetime, explode_size, color=color)
         in_game.bulletGroup.add(bullet)
 
-    """def flip(self):
-        if not self.flamethrower:
-            self.flamethrower = True
-        else:
-            self.flamethrower = False"""
 
     def ft(self, mouse_pos):
         if self.flamethrower:

@@ -39,8 +39,6 @@ class Bullet(pygame.sprite.Sprite):
                 for dy, dx in itertools.product(range(-radius, radius+1), repeat=2):
                         # kustutab kivi map_list'ist, uuendab kaarti ja minimapi
                         game_classes.block_delete(round(self.pos[1] + self.speed_y + dy), round(self.pos[0] + self.speed_x + dx))
-            else:
-                game_classes.block_delete(round(self.pos[1] + self.speed_y + dy), round(self.pos[0] + self.speed_x + dx))
 
         except: pass
 
@@ -77,3 +75,36 @@ class Fireparticle(Bullet):
         # make color change magic happen.
         rand = random.randint(1, 50)
         self.image.fill((255, int(255 - (_life_time * (255 - rand))), 50 - rand))
+
+class Buff():
+    def __init__(self, character, lifetime=1000):
+        self.start_time = pygame.time.get_ticks()
+        self.lifetime = lifetime
+        character.add_buffs(self)
+
+
+    def check_buff_timers(self, character):
+        if pygame.time.get_ticks() - self.start_time > self.lifetime:
+            character.rm_buffs(self)
+
+
+class FireDamage(Buff):
+    def __init__(self, character, damage=5):
+        Buff.__init__(self, character, lifetime=500)
+        self.damage = damage
+        self.type = "fire"
+
+    def Buff_effect(self, character):
+        character.health -= self.damage
+
+
+class SlowEffect(Buff):
+    def __init__(self, character, slow=0.3):
+        Buff.__init__(self, lifetime=500)
+        self.slow = slow
+        character.speed_x *= self.slow
+        character.speed_y *= self.slow
+
+
+    def Buff_effect(self, character):
+        pass

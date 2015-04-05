@@ -15,6 +15,7 @@ def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
     screen.blit(fps_surface, (0, 0))
+    print(str(1//(ms/1000)))
 
 def draw_minimap(block_size, surface_size):
     global minimap_surface
@@ -131,6 +132,7 @@ def update_map():
             map_chunk.append(trunc(cord_x))
 
             World_map.map_dict[tuple(map_chunk)].map[map_update_queue[i][0]][map_update_queue[i][1]] = map_update_queue[i][2]
+
 
             if map_update_queue[i][2] in terrain_textures:
                 map_surface_dict[tuple(map_chunk)].blit(terrain_textures[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size))
@@ -296,7 +298,15 @@ def draw(screen, ms):
 
     # Kui lähed 10 sammu kaugusele mapi äärest genereeri sinna äärde uus map
     if map_gen.get_map_gen_direction(player1.pos, 10, map_size) != (0, 0):
-        World_map.add_map((0, 0), map_gen.get_map_gen_direction(player1.pos, 10, map_size), map_size)
+        current_map = (0, 0)
+        map_gen_dir = map_gen.get_map_gen_direction(player1.pos, 10, map_size)
+        World_map.add_map((0, 0), map_gen_dir, map_size)
+        x, y = map_gen_dir
+        # Kui liigume diagonaalis, magic
+        if abs(x) + abs(y) == 2:
+            World_map.add_map(current_map, (x, 0), map_size)
+            World_map.add_map(current_map, (0, y), map_size)
+
 
 
     fps_counter(screen, ms)
