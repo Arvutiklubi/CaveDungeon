@@ -15,7 +15,6 @@ def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
     screen.blit(fps_surface, (0, 0))
-    print(str(1//(ms/1000)))
 
 def draw_minimap(block_size, surface_size):
     global minimap_surface
@@ -283,7 +282,7 @@ def draw(screen, ms):
 
     screen.blit(whole_map_surface, (camera_pos[0]-abs(greatest_negative_x)*map_size*block_size, camera_pos[1]-greatest_positive_y*map_size*block_size))
 
-    player1.update(screen, mouse_index)
+    player1.update(screen, mouse_index, ms)
 
     enemyGroup.update(screen)
     enemyGroup.draw(screen)

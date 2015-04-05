@@ -122,7 +122,13 @@ class player(Character):
         self.flamethrower = False
         self.block_mine_range = 20
 
-    def update(self, screen, mouse_pos):
+        #Päris maksimaalne kiirus millega mängja liigub, ühik - ruutu/millisekundis
+        self.real_speed = 0.04
+
+        #ümardamata asukoht
+        self.real_pos = self.pos
+
+    def update(self, screen, mouse_pos, ms):
         # esimene: kolmnurga alus; teine: vasak haar; kolmas: parem haar
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0], self.pos_onscreen[1]+self.size[1]), 3)
         pygame.draw.line(screen, self.color, (self.pos_onscreen[0], self.pos_onscreen[1]+self.size[1]), (self.pos_onscreen[0]+self.size[0]/2, self.pos_onscreen[1]), 2)
@@ -130,12 +136,14 @@ class player(Character):
         self.ft(mouse_pos)
 
         if self.collision_detect():
-            self.pos = [self.pos[0]+self.speed_x, self.pos[1]+self.speed_y]
+            self.real_pos = [self.real_pos[0]+self.speed_x*self.real_speed*ms, self.real_pos[1]+self.speed_y*self.real_speed*ms]
         elif self.dir == "y":
-            self.pos = [self.pos[0], self.pos[1]+self.speed_y]
+            self.real_pos = [self.real_pos[0], self.real_pos[1]+self.speed_y*self.real_speed*ms]
         elif self.dir == "x":
-            self.pos = [self.pos[0]+self.speed_x, self.pos[1]]
+            self.real_pos = [self.real_pos[0]+self.speed_x*self.real_speed*ms, self.real_pos[1]]
 
+        self.pos[0] = round(self.real_pos[0])
+        self.pos[1] = round(self.real_pos[1])
         self.pick_loot()
 
     def mine_block(self, mouse_click_pos):
