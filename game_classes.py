@@ -100,7 +100,7 @@ class Enemy(Character, pygame.sprite.Sprite):
             Character.__init__(self, self.pos)
 
         self.image = pygame.Surface([in_game.block_size, 2*in_game.block_size])
-        self.image.fill((0,255,255))
+        #self.image.fill((0,255,255))
         self.rect = self.image.get_rect()
 
         self.rect.x = self.pos[0] * in_game.block_size - in_game.camera_pos[0]

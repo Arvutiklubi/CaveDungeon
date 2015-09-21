@@ -6,16 +6,18 @@ block_size = 16
 
 mm_block_size, mm_surface_size = 2, 150
 
+
 def get_vars():
     global mouse_pos, mouse_index
     mouse_pos = pygame.mouse.get_pos()
     mouse_index = [(mouse_pos[0]-camera_pos[0])//block_size, (mouse_pos[1]-camera_pos[1])//block_size]
 
+
 def fps_counter(screen, ms):
     fps_text = 'FPS: ' + str(1//(ms/1000))
     fps_surface = std_font.render(fps_text, False, (255, 255, 255))
     screen.blit(fps_surface, (0, 0))
-    print(str(1//(ms/1000)))
+
 
 def draw_minimap(block_size, surface_size):
     global minimap_surface
@@ -45,9 +47,11 @@ def draw_minimap(block_size, surface_size):
         row += 1
         column = 0
 
+
 def minimap_update(block_size, surface_size, player_pos):
     minimap_seqment = minimap_surface.subsurface((block_size * player_pos[0], block_size * player_pos[1], surface_size, surface_size))
     return minimap_seqment
+
 
 def draw_map_surface(block_size):
     global map_surface_dict
@@ -84,6 +88,7 @@ def draw_map_surface(block_size):
 
         row = 0
         column = 0
+
 
 def update_map():
     global whole_map_surface , map_surface_dict, map_update_queue, World_map
@@ -140,6 +145,7 @@ def update_map():
 
     map_update_queue = []
 
+
 def join_maps():
     global World_map, map_surface_dict, whole_map_surface, greatest_negative_x, greatest_positive_y, greatest_positive_x, greatest_negative_y
 
@@ -169,6 +175,7 @@ def join_maps():
     for i in map_surface_dict:
         whole_map_surface.blit(map_surface_dict[i], ((abs(greatest_negative_x) + i[0]) * map_size * block_size, (greatest_positive_y - i[1]) * map_size * block_size))
 
+
 def init():
     global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup, map_update_queue, whole_map_surface
     # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
@@ -180,7 +187,7 @@ def init():
     # esialgne map_list on world_mapi (0, 0) element. See juhtub olema Map objekt. Map objektist tahame map listi.
     map_list = World_map.map_dict[(0, 0)].map
 
-    #list kuhu lähevad kaardi muudatused, vorm = [y, x, block_ID]
+    # list kuhu lähevad kaardi muudatused, vorm = [y, x, block_ID]
     map_update_queue = []
 
     camera_pos = [0, 0]
@@ -197,6 +204,7 @@ def init():
 
     # pygame'i standartne font
     std_font = pygame.font.Font(None, 16)
+
 
 def on_event(event):
     global player1, mouse_click_pos, map_surface_dict
@@ -248,6 +256,7 @@ def on_event(event):
             #player1.flip()
             player1.flamethrower = False
 
+
 def draw(screen, ms):
     global camera_pos, World_map
 
@@ -289,7 +298,6 @@ def draw(screen, ms):
         if abs(x) + abs(y) == 2:
             World_map.add_map(current_map, (x, 0), map_size)
             World_map.add_map(current_map, (0, y), map_size)
-
 
 
     fps_counter(screen, ms)
