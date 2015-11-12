@@ -81,7 +81,10 @@ def draw_map_surface(block_size):
         map_surface_dict[x] = pygame.Surface((map_size*block_size, map_size*block_size))
         for i in range(len(World_map.map_dict[x].map)):
             for j in World_map.map_dict[x].map[i]:
-                map_surface_dict[x].fill(colors[j], (block_size*colomn, block_size*row, block_size, block_size))
+                if j in terrain_textures:
+                    map_surface_dict[x].blit(terrain_textures[j], (block_size*colomn, block_size*row))
+                else:
+                    map_surface_dict[x].fill(colors[j], (block_size*colomn, block_size*row, block_size, block_size))
                 colomn += 1
             row +=1
             colomn = 0
@@ -135,8 +138,15 @@ def update_map():
 
             World_map.map_dict[tuple(map_chunk)].map[map_update_queue[i][0]][map_update_queue[i][1]] = map_update_queue[i][2]
 
-            map_surface_dict[tuple(map_chunk)].fill(colors[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size, block_size, block_size))
-            whole_map_surface.fill(colors[map_update_queue[i][2]], (((abs(greatest_negative_x1) + map_chunk[0])*map_size + map_update_queue[i][1])*block_size, ((greatest_positive_y1 - map_chunk[1])*map_size + map_update_queue[i][0])*block_size, block_size, block_size))
+
+            if map_update_queue[i][2] in terrain_textures:
+                map_surface_dict[tuple(map_chunk)].blit(terrain_textures[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size))
+                whole_map_surface.blit(terrain_textures[map_update_queue[i][2]], (((abs(greatest_negative_x1) + map_chunk[0])*map_size + map_update_queue[i][1])*block_size, ((greatest_positive_y1 - map_chunk[1])*map_size + map_update_queue[i][0])*block_size))
+
+            else:
+                map_surface_dict[tuple(map_chunk)].fill(colors[map_update_queue[i][2]], (map_update_queue[i][1]*block_size, map_update_queue[i][0]*block_size, block_size, block_size))
+                whole_map_surface.fill(colors[map_update_queue[i][2]], (((abs(greatest_negative_x1) + map_chunk[0])*map_size + map_update_queue[i][1])*block_size, ((greatest_positive_y1 - map_chunk[1])*map_size + map_update_queue[i][0])*block_size, block_size, block_size))
+
     for j in World_map.map_dict:
         for i in World_map.map_dict[tuple(j)].dropped_items:
 
@@ -177,8 +187,15 @@ def join_maps():
 
 
 def init():
-    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup, map_update_queue, whole_map_surface
+    global map_list, camera_pos, player1, World_map, std_font, enemy,enemyGroup, bullet, bulletGroup, map_update_queue, whole_map_surface, terrain_textures
     # init funktsioon kutsutakse mängu alguses korra, kõik muutujad mida kasutakatse üle mooduli või üle mängu peaksid olema deklareeritud siin
+
+    terrain_textures = {
+        2: pygame.image.load('generic_rock.png')
+    }
+
+    for i in terrain_textures:
+        pygame.transform.scale(terrain_textures[i], (block_size, block_size))
 
     # genereerib kaardi
     World_map = map_gen.Whole_map(map_size)
@@ -275,7 +292,7 @@ def draw(screen, ms):
 
     screen.blit(whole_map_surface, (camera_pos[0]-abs(greatest_negative_x)*map_size*block_size, camera_pos[1]-greatest_positive_y*map_size*block_size))
 
-    player1.update(screen, mouse_index)
+    player1.update(screen, mouse_index, ms)
 
     enemyGroup.update(screen)
     enemyGroup.draw(screen)

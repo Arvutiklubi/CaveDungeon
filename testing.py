@@ -1,4 +1,9 @@
-#sellesse file'i tulevad katsetused, see ei ole mänguga seotud, tehke selle failiga mida tahate :)
-from math import trunc
+import os, time
 
-print(trunc(0.))
+print('x')
+
+for i in range(5):
+    x = input('Kirjuta midagi: ')
+    print(x)
+    time.sleep(.4)
+    os.system('cls')
